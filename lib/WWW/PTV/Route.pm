@@ -31,6 +31,8 @@ sub new {
 
 	$args{ua} ? weaken( $self->{ua} = $args{ua} ) : croak 'Mandatory argument ua not supplied';
 
+	use Data::Dumper;
+	print Dumper( $self );
         return $self
 }
 
