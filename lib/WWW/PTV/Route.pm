@@ -46,10 +46,10 @@ sub __get_tt {
 
 	for ( $t->look_down( _tag => 'meta' ) ) {
 		if( ( defined $_->attr( 'http-equiv' ) ) and ( $_->attr( 'http-equiv' ) eq 'refresh' ) ) {
-			(my $url = $_->attr( 'content' ) ) =~ s/^.*url=//;
+			( my $url = $_->attr( 'content' ) ) =~ s/^.*url=//;
 			$url .= '&itdLPxx_scrollOffset=118';
 			print "Getting: $url\n";
-			$t = HTML::TreeBuilder->new_from_content( $self->__request( "http://tt.ptv.vic.gov.au/tt/$url" ) );
+			$t = HTML::TreeBuilder->new_from_content( $self->__request( $self->{uri}.'/tt/'.$url ) );
 			last
 		}
 	}
