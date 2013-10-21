@@ -29,10 +29,9 @@ sub new {
 
         foreach my $attr ( @ATTR ) { $self->{$attr} = $args{$attr} }
 
+	$self->{uri} = $args{uri};
 	$args{ua} ? weaken( $self->{ua} = $args{ua} ) : croak 'Mandatory argument ua not supplied';
 
-	use Data::Dumper;
-	print Dumper( $self );
         return $self
 }
 
@@ -46,7 +45,7 @@ sub __get_tt {
 	my $t = HTML::TreeBuilder->new_from_content( $tt );
 
 	for ( $t->look_down( _tag => 'meta' ) ) {
-		if( $_->attr( 'http-equiv' ) eq 'refresh' ) {
+		if( ( defined $_->attr( 'http-equiv' ) ) and ( $_->attr( 'http-equiv' ) eq 'refresh' ) ) {
 			(my $url = $_->attr( 'content' ) ) =~ s/^.*url=//;
 			$url .= '&itdLPxx_scrollOffset=118';
 			print "Getting: $url\n";

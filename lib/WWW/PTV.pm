@@ -176,7 +176,8 @@ sub get_route_by_id {
 	my $operator 	= $t->look_down( _tag => 'div', class => 'operator' )->as_text;
 	( $route{operator}, $route{operator_ph} ) 
 			= $operator =~ /Operator:(.*?)Contact:(.*?)Visit/;
-	$route{ua} = $self->{ua};
+	$route{ua}	= $self->{ua};
+	$route{uri}	= $self->{uri};
 
 	return WWW::PTV::Route->new( %route )
 }
