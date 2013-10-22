@@ -29,6 +29,8 @@ Version 0.01
 =cut
 
 our $VERSION = '0.01';
+our %STOP;
+our %ROUTE;
 
 sub __request {
 	my($self,$uri)	= @_;
@@ -179,7 +181,8 @@ sub get_route_by_id {
 	$route{ua}	= $self->{ua};
 	$route{uri}	= $self->{uri};
 
-	return WWW::PTV::Route->new( %route )
+	$ROUTE{ $id }	= WWW::PTV::Route->new( %route );
+	return $ROUTE{ $id }
 }
 
 
@@ -264,9 +267,9 @@ sub get_stop_by_id {
 
 	$stop{ua} = $self->{ua};
 
-	my $stop = WWW::PTV::Stop->new( %stop );
+	$STOP{ $id } = WWW::PTV::Stop->new( %stop );
 
-	return $stop;
+	return $STOP{ $id }
 }
 
 sub _get_line_type {

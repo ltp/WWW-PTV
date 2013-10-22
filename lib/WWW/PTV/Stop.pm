@@ -35,4 +35,9 @@ sub new {
 	return $self
 }
 
+sub routes {
+	my $self = shift;
+	return keys %{ { map { $_->{route_no} => 1 } @$self->{routes} } }
+}
+
 1;
