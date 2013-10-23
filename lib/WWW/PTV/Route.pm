@@ -7,6 +7,7 @@ use HTML::TreeBuilder;
 use Scalar::Util qw(weaken);
 use Carp qw(croak);
 
+our $STOP = {};
 our $VERSION = '0.01';
 our @ATTR = qw(	id direction_out direction_in direction_out_link direction_in_link
 		description_out description_in operator operator_ph );
@@ -68,6 +69,7 @@ sub __get_tt {
 	my @stop_names = map { $_->as_text } @stops;
 	my @stop_links = map { my ($r) = $_->look_down( _tag => 'a' )->attr( 'href' ) =~ /.*\/(\d*$)/ } @stops;
 	my $stop_times;
+	my $c = 0;
 
 	foreach my $t ( $t->look_down( _tag => 'div', class => qr/^ttBodyN?TP$/ ) ) {
 		#my @s = map { $_->as_text } $t->look_down( _tag => 'span' );
@@ -84,8 +86,12 @@ sub __get_tt {
 				);
 		}
 
+		$self->{ STOP }->{ $stop_links[$c] }->{ $direction } = $s;
+		$self->{ STOP }->{ $stop_links[$c] }->{ name } = $stop_names[$c];
+		$c++;
 		push @{ $stop_times }, $s
 	}
+
 	return $stop_times;
 	return @stop_links
 }
