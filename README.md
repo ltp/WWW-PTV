@@ -1,19 +1,19 @@
 NAME
-====
+----
     WWW::PTV - Perl interface to Public Transport Victoria (PTV) Website
 
 VERSION
-=======
+-------
     Version 0.01
 
 SYNOPSIS
-========
+--------
         use WWW::PTV;
 
         my $ptv = WWW::PTV->new;
     
 METHODS
-=======
+-------
 *  new
     Constructor method - creates a new WWW::PTV object.
 
@@ -84,44 +84,45 @@ METHODS
     See the WWW::Route page for more detail.
 
 AUTHOR
-======
-    Luke Poskitt, "<ltp at cpan.org>"
+------
+Luke Poskitt, "<ltp at cpan.org>"
 
 BUGS
-====
-    Please report any bugs or feature requests to "bug-www-ptv at
-    rt.cpan.org", or through the web interface at
-    <http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-PTV>. I will be
-    notified, and then you'll automatically be notified of progress on your
-    bug as I make changes.
+----
+Please report any bugs or feature requests to "bug-www-ptv at
+rt.cpan.org", or through the web interface at
+[http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-PTV]
+http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-PTV. I will be
+notified, and then you'll automatically be notified of progress on your
+bug as I make changes.
 
 SUPPORT
-=======
-    You can find documentation for this module with the perldoc command.
+-------
+You can find documentation for this module with the perldoc command.
 
         perldoc WWW::PTV
 
-    You can also look for information at:
+You can also look for information at:
 
-    * RT: CPAN's request tracker
-        <http://rt.cpan.org/NoAuth/Bugs.html?Dist=WWW-PTV>
+* RT: CPAN's request tracker
+	[http://rt.cpan.org/NoAuth/Bugs.html?Dist=WWW-PTV]http://rt.cpan.org/NoAuth/Bugs.html?Dist=WWW-PTV
 
-    * AnnoCPAN: Annotated CPAN documentation
-        <http://annocpan.org/dist/WWW-PTV>
+* AnnoCPAN: Annotated CPAN documentation
+	[http://annocpan.org/dist/WWW-PTV]http://annocpan.org/dist/WWW-PTV
 
-    * CPAN Ratings
-        <http://cpanratings.perl.org/d/WWW-PTV>
+* CPAN Ratings
+	[http://cpanratings.perl.org/d/WWW-PTV]http://cpanratings.perl.org/d/WWW-PTV
 
-    * Search CPAN
-        <http://search.cpan.org/dist/WWW-PTV/>
+* Search CPAN
+	[http://search.cpan.org/dist/WWW-PTV/]http://search.cpan.org/dist/WWW-PTV/
 
 LICENSE AND COPYRIGHT
-=====================
-    Copyright 2012 Luke Poskitt.
+---------------------
+Copyright 2014 Luke Poskitt.
 
-    This program is free software; you can redistribute it and/or modify it
-    under the terms of either: the GNU General Public License as published
-    by the Free Software Foundation; or the Artistic License.
+This program is free software; you can redistribute it and/or modify it
+under the terms of either: the GNU General Public License as published
+by the Free Software Foundation; or the Artistic License.
 
-    See http://dev.perl.org/licenses/ for more information.
+See http://dev.perl.org/licenses/ for more information.
 
