@@ -10,24 +10,6 @@ use Carp qw(croak);
 use WWW::PTV::Stop;
 use WWW::PTV::Route;
 
-=head1 NAME
-
-WWW::PTV - Perl interface to Public Transport Victoria (PTV) Website
-
-=head1 VERSION
-
-Version 0.01
-
-=head1 SYNOPSIS
-
-    use WWW::PTV;
-
-    my $ptv = WWW::PTV->new;
-    
-=head1 METHODS
-
-=cut
-
 our $VERSION = '0.01';
 our %STOP;
 our %ROUTE;
@@ -50,12 +32,6 @@ sub __tl_request {
 	return my %routes	= map { $_->attr( 'value' ) => $_->as_text } grep { $_->attr( 'value' ) != -1 } @routes
 }
 
-=head2 new
-
-Constructor method - creates a new WWW::PTV object. 
-
-=cut
-
 sub new {
 	my($class,%args)= @_;
 	my $self 	= bless {}, $class;
@@ -65,96 +41,21 @@ sub new {
 	return $self	
 }
 
-=head2 get_metropolitan_bus_routes
-
-Returns a hash containing all metropolitan bus routes indexed by the bus route ID.
-
-B<Please note> that the bus route ID is not the same as the bus route ID that may be
-used to identify the service by the service operator - the ID used in this module refers
-to the unique ID assigned to the route within the context of the PTV website.
-
-	my %routes = $ptv->get_metropolitan_bus_routes;
-	map { printf( "%-6s: %-50s\n", $_, $routes{ $_ } } sort keys %routes;
-
-	# Prints a list of all metropolitan bus route IDs and names. e.g.
-	# 1000  : 814 - Springvale South - Dandenong via Waverley Gardens Shopping Centre, Springvale
-	# 1001  : 815 - Dandenong - Noble Park                      
-	# 1003  : 821 - Southland - Clayton via Heatherton 
-	# ... etc.
-
-=cut
-
 sub get_metropolitan_bus_routes {
 	return $_[0]->__tl_request( '/timetables/metropolitan-buses/' )
 }
-
-=head2 get_regional_bus_routes
-
-Returns a hash containing all regional bus routes indexed by the bus route ID.
-
-B<Please note> that the bus route ID is the PTV designated ID for the route and not
-the service operator ID.
-
-	my %routes = $ptv->get_regional_bus_routes;
-
-	while (( $id, $desc ) = each %routes ) {
-		print "$id : $desc\n" if ( $desc =~ /Echuca/ )
-	}
-
-	# Prints a list of regional bus routes containing 'Echuca' in the route name - e.g.
-	# 1346 : Echuca - Moama (Route 3 - Circular)
-	# 1345 : Echuca - Echuca East (Route 2 - Circular)
-	# 6649 : Kerang - Echuca via Cohuna (Effective from 18/11/2012)
-	# ... etc.
-
-=cut
 
 sub get_regional_bus_routes {
 	return $_[0]->__tl_request( '/timetables/regional-buses/' )
 }
 
-=head2 get_metropolitan_tram_routes
-
-Returns a hash containing all metropolitan tram routes indexed by the route ID.
-
-B<PLease note> as per the method above, the route ID is the PTV designated route
-and not the service operator ID.
-
-=cut
-
 sub get_metropolitan_tram_routes {
 	return $_[0]->__tl_request( '/timetables/metropolitan-trams/' )
 }
 
-=head2 get_metropolitan_train_routes
-
-Returns a hash containing all metropolitan train routes indexed by the route ID.
-
-B<PLease note> as per the method above, the route ID is the PTV designated route
-and not the service operator ID.
-
-=cut
-
 sub get_metropolitan_train_routes {
 	return $_[0]->__tl_request( '/timetables/metropolitan-trains/' )
 }
-
-=head2 get_route_by_id
-
-	my $route = $ptv->get_route_by_id( 1 );
-
-	print $route->direction_out."\n".$route_description."\n";
-	# Prints the outbound route direction ("To Alamein") and a 
-	# description of the outbound route
-
-Returns a L<WWW::Route> object for the given route ID representing a transit route.
-
-B<Note that> the route ID is not the service operator route ID, but is the PTV route
-ID as obtained from one of the other methods in this class.
-
-See the L<WWW::Route> page for more detail.
-
-=cut
 
 sub get_route_by_id {
 	my( $self, $id )= @_;
@@ -278,6 +179,94 @@ sub _get_line_type {
 	$obj =~ s/\..*$//;
 	return lc $obj
 }
+
+__END__
+
+=head1 NAME
+
+WWW::PTV - Perl interface to Public Transport Victoria (PTV) Website
+
+=head1 VERSION
+
+Version 0.01
+
+=head1 SYNOPSIS
+
+    use WWW::PTV;
+
+    my $ptv = WWW::PTV->new;
+    
+=head1 METHODS
+
+=head2 new
+
+Constructor method - creates a new WWW::PTV object. 
+
+=head2 get_metropolitan_bus_routes
+
+Returns a hash containing all metropolitan bus routes indexed by the bus route ID.
+
+B<Please note> that the bus route ID is not the same as the bus route ID that may be
+used to identify the service by the service operator - the ID used in this module refers
+to the unique ID assigned to the route within the context of the PTV website.
+
+	my %routes = $ptv->get_metropolitan_bus_routes;
+	map { printf( "%-6s: %-50s\n", $_, $routes{ $_ } } sort keys %routes;
+
+	# Prints a list of all metropolitan bus route IDs and names. e.g.
+	# 1000  : 814 - Springvale South - Dandenong via Waverley Gardens Shopping Centre, Springvale
+	# 1001  : 815 - Dandenong - Noble Park                      
+	# 1003  : 821 - Southland - Clayton via Heatherton 
+	# ... etc.
+
+=head2 get_regional_bus_routes
+
+Returns a hash containing all regional bus routes indexed by the bus route ID.
+
+B<Please note> that the bus route ID is the PTV designated ID for the route and not
+the service operator ID.
+
+	my %routes = $ptv->get_regional_bus_routes;
+
+	while (( $id, $desc ) = each %routes ) {
+		print "$id : $desc\n" if ( $desc =~ /Echuca/ )
+	}
+
+	# Prints a list of regional bus routes containing 'Echuca' in the route name - e.g.
+	# 1346 : Echuca - Moama (Route 3 - Circular)
+	# 1345 : Echuca - Echuca East (Route 2 - Circular)
+	# 6649 : Kerang - Echuca via Cohuna (Effective from 18/11/2012)
+	# ... etc.
+
+=head2 get_metropolitan_tram_routes
+
+Returns a hash containing all metropolitan tram routes indexed by the route ID.
+
+B<PLease note> as per the method above, the route ID is the PTV designated route
+and not the service operator ID.
+
+=head2 get_metropolitan_train_routes
+
+Returns a hash containing all metropolitan train routes indexed by the route ID.
+
+B<PLease note> as per the method above, the route ID is the PTV designated route
+and not the service operator ID.
+
+=head2 get_route_by_id
+
+	my $route = $ptv->get_route_by_id( 1 );
+
+	print $route->direction_out."\n".$route_description."\n";
+	# Prints the outbound route direction ("To Alamein") and a 
+	# description of the outbound route
+
+Returns a L<WWW::Route> object for the given route ID representing a transit route.
+
+B<Note that> the route ID is not the service operator route ID, but is the PTV route
+ID as obtained from one of the other methods in this class.
+
+See the L<WWW::Route> page for more detail.
+
 
 =head1 AUTHOR
 
