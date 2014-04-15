@@ -13,6 +13,7 @@ use WWW::PTV::Route;
 our $VERSION = '0.01';
 our %STOP;
 our %ROUTE;
+our $CACHE;
 
 sub __request {
 	my($self,$uri)	= @_;
@@ -25,11 +26,14 @@ sub __request {
 
 sub __tl_request {
 	my ($self, $tag_id)= @_;
-	my $r		= $self->__request( 'http://ptv.vic.gov.au/timetables' );
+	my $r = ( $CACHE->{timetables}->{master}
+		? $CACHE->{timetables}->{master}
+		: $self->__request( 'http://ptv.vic.gov.au/timetables' ) );
 	my $t 		= HTML::TreeBuilder->new_from_content( $r );
+	$CACHE->{timetables}->{master} = $r if $self->{cache};
 	$t		= $t->look_down( _tag => 'select', id => $tag_id );
 	my @routes	= $t->look_down( _tag => 'option' );
-	return my %routes	= map { $_->attr( 'value' ) => $_->as_text } grep { $_->attr( 'value' ) ne '' } @routes
+	return my %routes = map { $_->attr( 'value' ) => $_->as_text } grep { $_->attr( 'value' ) ne '' } @routes
 }
 
 sub new {
@@ -38,6 +42,7 @@ sub new {
 	$self->{uri} 	= 'http://' . ( defined $args{uri} ? $args{uri} : 'ptv.vic.gov.au' ) . '/';
 	$self->{ua}	= LWP::UserAgent->new;
 	$self->{tree}	= HTML::TreeBuilder->new;
+	$self->{cache}++ if $args{cache};
 	return $self	
 }
 
