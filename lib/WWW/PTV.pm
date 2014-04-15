@@ -26,11 +26,11 @@ sub __request {
 
 sub __tl_request {
 	my ($self, $tag_id)= @_;
-	my $r = ( $CACHE->{timetables}->{master}
+	my $r = ( $self->{cache} and $CACHE->{timetables}->{master}
 		? $CACHE->{timetables}->{master}
 		: $self->__request( 'http://ptv.vic.gov.au/timetables' ) );
-	my $t 		= HTML::TreeBuilder->new_from_content( $r );
 	$CACHE->{timetables}->{master} = $r if $self->{cache};
+	my $t 		= HTML::TreeBuilder->new_from_content( $r );
 	$t		= $t->look_down( _tag => 'select', id => $tag_id );
 	my @routes	= $t->look_down( _tag => 'option' );
 	return my %routes = map { $_->attr( 'value' ) => $_->as_text } grep { $_->attr( 'value' ) ne '' } @routes
@@ -73,9 +73,9 @@ sub get_regional_bus_routes {
 sub get_route_by_id {
 	my( $self, $id )= @_;
 	$id or return "Mandatory parameter id not given";
-	#my $r 		= $self->__request( "/route/view/$id" );
-	#my $t		= HTML::TreeBuilder->new_from_content( $r );
-	my $t		= HTML::TreeBuilder->new_from_file( './route_1' );
+	my $r 		= $self->__request( "/route/view/$id" );
+	my $t		= HTML::TreeBuilder->new_from_content( $r );
+	#my $t		= HTML::TreeBuilder->new_from_file( './metro_train_route_1' );
 	my %route	= (id => $id);
 	my $r_link	= $t->look_down( _tag => 'div', id => 'content' );
 	( $route{direction_in}, $route{direction_out} ) 
@@ -90,11 +90,18 @@ sub get_route_by_id {
 	( $route{description_in}, $route{description_out} ) 
 			= map { $_->as_text } $r_link->look_down( _tag => 'p' );
 	my $operator 	= $t->look_down( _tag => 'div', class => 'operator' )->as_text;
+	#print "OPERATOR: $operator\n\n";
+	#my @operator	= split /:/, $operator;
+	#print join " - ", @operator;
+	#$operator[1] =~ s/ Website.*$//;
+	#print "OPERATOR: $operator[1]\n";
 	( $route{operator}, $route{operator_ph} ) 
-			= $operator =~ /Operator:(.*?)Contact:(.*?)Visit/;
+			= $operator =~ /(.*)? Contact.*: (.*?)/;
+	print "OPERATOR: $route{operator} $route{operator_ph}\n";
 	$route{ua}	= $self->{ua};
 	$route{uri}	= $self->{uri};
-
+	my $route 	= WWW::PTV::Route->new( %route );
+	$CACHE->{ROUTE}->{$id}	= $route if ( $self->{cache} );
 	$ROUTE{ $id }	= WWW::PTV::Route->new( %route );
 	return $ROUTE{ $id }
 }
