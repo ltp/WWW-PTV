@@ -180,6 +180,8 @@ sub _get_line_type {
 	return lc $obj
 }
 
+1;
+
 __END__
 
 =head1 NAME
@@ -324,5 +326,3 @@ See http://dev.perl.org/licenses/ for more information.
 
 
 =cut
-
-1;
