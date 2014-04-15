@@ -24,12 +24,12 @@ sub __request {
 }
 
 sub __tl_request {
-	my ($self, $res)= @_;
-	my $r		= $self->__request( $res );
+	my ($self, $tag_id)= @_;
+	my $r		= $self->__request( 'http://ptv.vic.gov.au/timetables' );
 	my $t 		= HTML::TreeBuilder->new_from_content( $r );
-	$t		= $t->look_down( _tag => 'select', id => 'MainLineId' );
+	$t		= $t->look_down( _tag => 'select', id => $tag_id );
 	my @routes	= $t->look_down( _tag => 'option' );
-	return my %routes	= map { $_->attr( 'value' ) => $_->as_text } grep { $_->attr( 'value' ) != -1 } @routes
+	return my %routes	= map { $_->attr( 'value' ) => $_->as_text } grep { $_->attr( 'value' ) ne '' } @routes
 }
 
 sub new {
@@ -42,19 +42,27 @@ sub new {
 }
 
 sub get_metropolitan_bus_routes {
-	return $_[0]->__tl_request( '/timetables/metropolitan-buses/' )
-}
-
-sub get_regional_bus_routes {
-	return $_[0]->__tl_request( '/timetables/regional-buses/' )
-}
-
-sub get_metropolitan_tram_routes {
-	return $_[0]->__tl_request( '/timetables/metropolitan-trams/' )
+	return $_[0]->__tl_request( 'RouteForm1_RouteUrl' );
 }
 
 sub get_metropolitan_train_routes {
-	return $_[0]->__tl_request( '/timetables/metropolitan-trains/' )
+	return $_[0]->__tl_request( 'RouteForm2_RouteUrl' )
+}
+
+sub get_metropolitan_tram_routes {
+	return $_[0]->__tl_request( 'RouteForm3_RouteUrl' );
+}
+
+sub get_vline_bus_routes {
+	return $_[0]->__tl_request( 'RouteForm4_RouteUrl' )
+}
+
+sub get_vline_train_routes {
+	return $_[0]->__tl_request( 'RouteForm5_RouteUrl' )
+}
+
+sub get_regional_bus_routes {
+	return $_[0]->__tl_request( 'RouteForm6_RouteUrl' )
 }
 
 sub get_route_by_id {
