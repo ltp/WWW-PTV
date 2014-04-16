@@ -90,14 +90,9 @@ sub get_route_by_id {
 	( $route{description_in}, $route{description_out} ) 
 			= map { $_->as_text } $r_link->look_down( _tag => 'p' );
 	my $operator 	= $t->look_down( _tag => 'div', class => 'operator' )->as_text;
-	#print "OPERATOR: $operator\n\n";
-	#my @operator	= split /:/, $operator;
-	#print join " - ", @operator;
-	#$operator[1] =~ s/ Website.*$//;
-	#print "OPERATOR: $operator[1]\n";
-	( $route{operator}, $route{operator_ph} ) 
-			= $operator =~ /(.*)? Contact.*: (.*?)/;
-	print "OPERATOR: $route{operator} $route{operator_ph}\n";
+	$operator 	=~ s/(Contact|Website|:)/,/g;
+	$operator 	=~ s/\s//g;
+	( $route{operator} ,$route{operator_ph} ) = ( split /,/, $operator )[0,2];
 	$route{ua}	= $self->{ua};
 	$route{uri}	= $self->{uri};
 	my $route 	= WWW::PTV::Route->new( %route );
