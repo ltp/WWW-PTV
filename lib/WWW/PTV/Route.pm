@@ -97,11 +97,6 @@ sub __get_tt {
 
 	my $ret = WWW::PTV::TimeTable->new( \@stop_names, \@stop_links, $stop_times );
 	return $ret;
-	$ret->{stop_times} = $stop_times;
-	$ret->{stop_links} = \@stop_links;
-	$ret->{stop_names} = \@stop_names;
-	return $stop_times;
-	return @stop_links
 }
 
 sub __request {
