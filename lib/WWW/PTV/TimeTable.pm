@@ -18,6 +18,20 @@ sub new {
 	return $self
 }
 
+sub stop_ids {
+	return @{ $_[0]->{stop_ids} }
+}
+
+sub stop_names {
+	return @{ $_[0]->{stop_names} }
+}
+
+sub get_schedule_by_stop_id {
+	my($self, $id) = @_;
+
+	return @{ $self->{stop_times} }[
+}
+
 1;
 
 __END__
