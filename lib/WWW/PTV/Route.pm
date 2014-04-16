@@ -3,6 +3,7 @@ package WWW::PTV::Route;
 use strict;
 use warnings;
 
+use WWW::PTV::TimeTable;
 use HTML::TreeBuilder;
 use Scalar::Util qw(weaken);
 use Carp qw(croak);
@@ -42,8 +43,10 @@ sub __get_tt {
         my( $self, $direction ) = @_; 
 	return unless $direction =~ /(in|out)/;
 
-        my $tt = $self->__request( ( $direction eq 'out' ? $self->{direction_out_link} : $self->{direction_in} ) );
+	my $tt = $self->__request( ( $direction eq 'out' ? $self->{direction_out_link} : $self->{direction_in} ) );
 	my $t = HTML::TreeBuilder->new_from_content( $tt );
+	#my $tt = HTML::TreeBuilder->new_from_file( './metro_train_route_1_tt' );
+	#my $t = $tt;
 
 	for ( $t->look_down( _tag => 'meta' ) ) {
 		if( ( defined $_->attr( 'http-equiv' ) ) and ( $_->attr( 'http-equiv' ) eq 'refresh' ) ) {
@@ -92,6 +95,11 @@ sub __get_tt {
 		push @{ $stop_times }, $s
 	}
 
+	my $ret = WWW::PTV::TimeTable->new( \@stop_names, \@stop_links, $stop_times );
+	return $ret;
+	$ret->{stop_times} = $stop_times;
+	$ret->{stop_links} = \@stop_links;
+	$ret->{stop_names} = \@stop_names;
 	return $stop_times;
 	return @stop_links
 }
