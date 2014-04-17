@@ -15,6 +15,7 @@ sub new {
 	$self->{stop_names} 	= $stop_names;
 	$self->{stop_ids}	= $stop_ids;
 	$self->{stop_times}	= $stop_times;
+	@{ $self->{map} }{ @{ $self->{stop_ids} } } = @{ $self->{stop_times} };
 	return $self
 }
 
@@ -27,12 +28,8 @@ sub stop_names {
 }
 
 sub get_schedule_by_stop_id {
-	my($self, $id) = @_;
-
-	return @{ $self->{stop_times} }[
+	return $_[0]->{map}{$_[1]}
 }
 
 1;
-
-__END__
 
