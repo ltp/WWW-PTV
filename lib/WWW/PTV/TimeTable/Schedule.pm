@@ -12,8 +12,19 @@ sub new {
 
 sub next {
 	my $self = shift;
-	my($h,$m) = localtime[2,1];
-	print "h: $h, m: $m\n";
+	my($h,$m) = (localtime(time))[2,1];
+	my $c = 0;
+
+	foreach my $t ( @{ $self->{schedule} } ) {
+		my($nh,$nm) = split /:/, $t;
+		$nm and $nh ne '-' or next;
+
+		if( $nh > $h && $nm > $m ) {
+			return [$nh,$nm]
+		}
+	}
+
+	return undef
 }
 
 1;
