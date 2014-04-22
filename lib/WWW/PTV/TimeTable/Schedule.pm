@@ -19,7 +19,7 @@ sub next {
 		my($nh,$nm) = split /:/, $t;
 		$nm and $nh ne '-' or next;
 
-		if( $nh > $h && $nm > $m ) {
+		if( $nh >= $h && $nm >= $m ) {
 			return [$nh,$nm]
 		}
 	}
