@@ -3,6 +3,7 @@ package WWW::PTV::TimeTable;
 use strict;
 use warnings;
 
+use WWW::PTV::TimeTable::Schedule;
 use Carp qw(croak);
 
 our $VERSION = '0.01';
@@ -28,8 +29,13 @@ sub stop_names {
 }
 
 sub get_schedule_by_stop_id {
-	return $_[0]->{map}{$_[1]}
+	return WWW::PTV::TimeTable::Schedule->new( $_[0]->{map}{$_[1]} )
 }
 
 1;
+
+__END__
+
+my $route = $ptv->get_route_by_id( 1 );
+my $schedule = $ptv->get_route_by_id( 1 )->get_outbound_tt;
 
