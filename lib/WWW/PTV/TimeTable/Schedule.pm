@@ -35,4 +35,8 @@ sub next {
 	return undef
 }
 
+sub next_five {
+	return $_[0]->next(5)
+}
+
 1;
