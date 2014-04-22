@@ -11,16 +11,24 @@ sub new {
 }
 
 sub next {
-	my $self = shift;
+	my ($self, $n) = @_;
+	$n or $n = 1;
+	my(@res, $c);
 	my($h,$m) = (localtime(time))[2,1];
-	my $c = 0;
 
 	foreach my $t ( @{ $self->{schedule} } ) {
 		my($nh,$nm) = split /:/, $t;
 		$nm and $nh ne '-' or next;
 
-		if( $nh >= $h && $nm >= $m ) {
-			return [$nh,$nm]
+		if( ($nh > $h) ||
+		    ($nh >= $h && $nm >= $m) ) {
+			push @res, [$nh,$nm];
+
+			if( ++$c == $n ) {
+				return ( ~~@res == 1 
+					? $res[0]
+					: \@res )
+			}
 		}
 	}
 
