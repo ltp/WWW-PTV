@@ -43,6 +43,12 @@ sub next_five {
 	return $_[0]->next(5)
 }
 
+sub pretty_print {
+	my $self = shift;
+	my($h,$m) = (localtime(time))[2,1];
+	print "Current local time is:\n";
+}
+
 1;
 
 __END__
@@ -135,9 +141,6 @@ Please report any bugs or feature requests to C<bug-www-ptv-timetable-schedule a
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-PTV-TimeTable-Schedule>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
-
-
-
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
@@ -167,10 +170,6 @@ L<http://search.cpan.org/dist/WWW-PTV-TimeTable-Schedule/>
 
 =back
 
-
-=head1 ACKNOWLEDGEMENTS
-
-
 =head1 LICENSE AND COPYRIGHT
 
 Copyright 2014 Luke Poskitt.
@@ -180,6 +179,5 @@ under the terms of either: the GNU General Public License as published
 by the Free Software Foundation; or the Artistic License.
 
 See http://dev.perl.org/licenses/ for more information.
-
 
 =cut
