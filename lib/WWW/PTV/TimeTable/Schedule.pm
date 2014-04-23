@@ -113,6 +113,8 @@ specifies the number of the next n service times to return.
 Returns the chronological next five service times for the schedule
 emulating the popular "next five" feature on the PTV website.
 
+Effectively calls next(5).
+
 =head3 as_list ()
 
 Returns the complete schedule as an ordered list.  Note that schedule times
