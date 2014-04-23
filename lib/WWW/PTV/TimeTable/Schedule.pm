@@ -15,12 +15,14 @@ sub as_list {
 }
 
 sub next {
-	my ($self, $n) = @_;
+	my ($self, $n, $i) = @_;
 	$n or $n = 1;
-	my(@res, $c);
+	$i or $i = 0;
+	my(@res,$c,$l);
 	my($h,$m) = (localtime(time))[2,1];
 
 	foreach my $t ( @{ $self->{schedule} } ) {
+		$l++;
 		my($nh,$nm) = split /:/, $t;
 		$nm and $nh ne '-' or next;
 
@@ -28,6 +30,9 @@ sub next {
 		    ($nh >= $h && $nm >= $m) ) {
 			push @res, [$nh,$nm];
 
+			if( $i == 7 ) {
+				return $l-1
+			}
 			if( ++$c == $n ) {
 				return ( ~~@res == 1 
 					? $res[0]
@@ -39,14 +44,29 @@ sub next {
 	return \@res
 }
 
+sub index_of_next {
+	return $_[0]->next(1,7)
+}
+
 sub next_five {
 	return $_[0]->next(5)
 }
 
 sub pretty_print {
-	my $self = shift;
-	my($h,$m) = (localtime(time))[2,1];
-	print "Current local time is:\n";
+	my $self= shift;
+	my @t	= localtime(time);
+	my $i	= $self->index_of_next;
+	my @s	= $self->as_list;
+	$s[$i]	= "===== Next service =====\n"
+			. "--> $s[$i] <--\n"
+			. "========================";
+	my @d	= qw(Sunday Monday Tuesday Wednesday Thursday Friday Saturday 
+		     Sunday);
+	my @m	= qw(January February March April May June July August September 
+		     October November December);
+	printf("Current local time and date is: %s %s %s %02d:%02d %s\n",
+		$d[$t[6]], $t[3], $m[$t[4]], $t[2], $t[1], ($t[5]+1900));
+	map { print "$_\n" } @s
 }
 
 1;
