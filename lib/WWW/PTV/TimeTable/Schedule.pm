@@ -70,8 +70,6 @@ WWW::PTV::TimeTable::Schedule - Class for operations with PTV time table schedul
 		       ->get_schedule_by_stop_id(19849)
 		       ->next_five;
 
-	# Print all 
-
 =head1 DESCRIPTION
 
 This module implements a utility class providing operations for PTV timetable 
@@ -99,8 +97,13 @@ particular stop on that route.
 
 =head3 next ( $INT )
 
+	my $next = $schedule->next;
+	print "The next service arrives at $$next[0]:$$next[1]\n";
+	# The next service arrives at 18:10
+
 Returns the next chronological service time on the schedule in respect to
-the current local time.
+the current local time as a list of two values corresponding to the hour
+and minute respectively.
 
 This method accepts an integer value as an optional parameter which, if passed
 specifies the number of the next n service times to return.
@@ -113,7 +116,8 @@ specifies the number of the next n service times to return.
 Returns the chronological next five service times for the schedule
 emulating the popular "next five" feature on the PTV website.
 
-Effectively calls next(5).
+The service times are returned as a list of lists of hour, minute
+values.  See B<next> for more information.
 
 =head3 as_list ()
 
