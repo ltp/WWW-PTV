@@ -57,16 +57,20 @@ sub pretty_print {
 	my @t	= localtime(time);
 	my $i	= $self->index_of_next;
 	my @s	= $self->as_list;
-	$s[$i]	= "===== Next service =====\n"
-			. "--> $s[$i] <--\n"
-			. "========================";
+	my $n	= $s[$i];
 	my @d	= qw(Sunday Monday Tuesday Wednesday Thursday Friday Saturday 
 		     Sunday);
 	my @m	= qw(January February March April May June July August September 
 		     October November December);
 	printf("Current local time and date is: %s %s %s %02d:%02d %s\n",
 		$d[$t[6]], $t[3], $m[$t[4]], $t[2], $t[1], ($t[5]+1900));
-	map { print "$_\n" } @s
+	@s	= map { sprintf("| %-6s |\n", $_ ) } @s;
+	$s[$i]	= "===== Next service =====\n"
+		. "        $n\n"
+		. "========================\n";
+	@s	= grep { /:/ } @s;
+	push @s, ""; unshift @s, "";
+	print join "+--------+\n", @s;
 }
 
 1;
@@ -145,11 +149,26 @@ emulating the popular "next five" feature on the PTV website.
 The service times are returned as a list of lists of hour, minute
 values.  See B<next> for more information.
 
+=head3 index_of_next ()
+
+Returns an integer value which corresponds to the index of the next service
+in the array returned by the B<as_list()> method.
+
+	# e.g. The service that I just missed was
+	my $previous = ($schedule)->[$schedule->index_of_next - 1];
+
+Needs work to ensure that pass-through or null stops are not returned.
+
 =head3 as_list ()
 
 Returns the complete schedule as an ordered list.  Note that schedule times
 may not conform to a standard format (e.g. hh:mm) and may use ASCII or Unicode
 characters to indicate special values.
+
+=head3 pretty_print ()
+
+Prints the current date and time and a nicely formatted schedule with the
+next service time clearly highlighted.
 
 =head1 AUTHOR
 
