@@ -157,7 +157,9 @@ in the array returned by the B<as_list()> method.
 	# e.g. The service that I just missed was
 	my $previous = ($schedule)->[$schedule->index_of_next - 1];
 
-Needs work to ensure that pass-through or null stops are not returned.
+Note that the invocation in the example above may not return a service
+time, but could return a sequence of characters indicating special
+service states.
 
 =head3 as_list ()
 
