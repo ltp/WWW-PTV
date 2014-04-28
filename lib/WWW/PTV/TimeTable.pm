@@ -96,9 +96,22 @@ particular stop on that route.
 =head3 stop_ids ()
 
 	my @stop_ids = $timetable->stop_ids;
-	print "Stops on this route: " . join ",", @stop_ids . "\n";
+	print "Stops on this route: " . join ", ", @stop_ids . "\n";
 
 Returns a list of in order stop IDs for this route in the selected direction.
+
+=head3 stop_names ()
+
+Returns a list of in order stop IDs for this route in the selected direction.
+	
+	print "This service will be stopping at : " 
+		. join ", ", $timetable->stop_names . "\n";
+
+
+=head3 get_schedule_by_stop_id ( $ID )
+
+=head3 get_schedule_by_stop_name ( $NAME )
+
 =head1 AUTHOR
 
 Luke Poskitt, C<< <ltp at cpan.org> >>
