@@ -33,15 +33,16 @@ sub get_schedule_by_stop_id {
 }
 
 sub get_schedule_by_stop_name {
+	my ($self, $stop) = @_;
 	my $c = 0;
 	# This is really ugly - but we need to use the index of the matching
 	# stop name as a hash key to retrieve the stop times from the map
-	map { /$_[1]/i and return 
-		WWW::PTV::TimeTable::Schedule->new( 
-			$_[0]->{map}{ @{ $_[0]->{stop_ids} }[$c]}
+	map { /$stop/i and return 
+		WWW::PTV::TimeTable::Schedule->new(
+			$self->{map}{ @{ $self->{stop_ids} }[$c]}
 		);
 		$c++ 
-	} @{ $_[0]->{stop_names} };
+	} @{ $self->{stop_names} };
 }
 
 1;
