@@ -107,10 +107,27 @@ Returns a list of in order stop IDs for this route in the selected direction.
 	print "This service will be stopping at : " 
 		. join ", ", $timetable->stop_names . "\n";
 
-
 =head3 get_schedule_by_stop_id ( $ID )
 
+	# Print a nicely formatted list of service times for
+	# the outbound direction of route 1 for stop ID 19849
+
+	$ptv->get_route_by_id( 1 )
+		->get_outbound_tt
+		->get_schedule_by_stop_id( 19849 )
+		->pretty_print;
+
 =head3 get_schedule_by_stop_name ( $NAME )
+
+	# Get a list of service times for route 1 in the
+	# outbound direction for the first station having 
+	# a name matching /wood/i (this will be stop ID 
+	# 19849 - 'Burwood').
+	
+	$ptv->get_route_by_id( 1 )
+		->get_outbound_tt
+		->get_schedule_by_stop_name( 'burwood' )
+		->as_list;
 
 =head1 AUTHOR
 
@@ -118,15 +135,15 @@ Luke Poskitt, C<< <ltp at cpan.org> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-www-ptv-timetable-schedule at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-PTV-TimeTable-Schedule>.  I will be notified, and then you'll
+Please report any bugs or feature requests to C<bug-www-ptv-timetable at rt.cpan.org>, or through
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-PTV-TimeTable>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
 
-    perldoc WWW::PTV::TimeTable::Schedule
+    perldoc WWW::PTV::TimeTable
 
 
 You can also look for information at:
@@ -135,19 +152,19 @@ You can also look for information at:
 
 =item * RT: CPAN's request tracker
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=WWW-PTV-TimeTable-Schedule>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=WWW-PTV-TimeTable>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/WWW-PTV-TimeTable-Schedule>
+L<http://annocpan.org/dist/WWW-PTV-TimeTable>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/WWW-PTV-TimeTable-Schedule>
+L<http://cpanratings.perl.org/d/WWW-PTV-TimeTable>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/WWW-PTV-TimeTable-Schedule/>
+L<http://search.cpan.org/dist/WWW-PTV-TimeTable/>
 
 =back
 
