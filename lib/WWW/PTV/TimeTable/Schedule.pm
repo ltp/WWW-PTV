@@ -4,9 +4,9 @@ use strict;
 use warnings;
 
 sub new {
-	my($class,$schedule) = @_;
+	my ($class, $schedule) = @_;
 	my $self = bless {}, $class;
-	$self->{schedule} = $schedule;
+	$self->{schedule}	= $schedule;
 	return $self
 }
 
