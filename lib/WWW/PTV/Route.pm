@@ -10,7 +10,7 @@ use Carp qw(croak);
 
 our $STOP = {};
 our $VERSION = '0.01';
-our @ATTR = qw(	id direction_out direction_in direction_out_link direction_in_link
+our @ATTR = qw(	id name direction_out direction_in direction_out_link direction_in_link
 		description_out description_in operator operator_ph );
 
 foreach my $attr ( @ATTR ) { 
@@ -96,7 +96,6 @@ sub __get_tt {
 	}
 
 	my $ret = WWW::PTV::TimeTable->new( \@stop_names, \@stop_links, $stop_times );
-	print "Setting self->{timetable}->{$direction} to $ret\n";
 	$self->{timetable}->{$direction} = $ret;
 	return $ret;
 }
@@ -132,13 +131,11 @@ WWW::PTV::Route - Class for operations with Public Transport Victoria (PTV) rout
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+	# Create a new WWW::PTV object
+	my $ptv = WWW::PTV->new();
 
-Perhaps a little code snippet.
-
-    use WWW::PTV::Route;
-
-    my $foo = WWW::PTV::Route->new();
+	# Return a WWW::PTV::Route object for route ID 1
+	my $route = 
     ...
 
 =head1 EXPORT
@@ -150,6 +147,8 @@ if you don't export anything, such as for a purely object-oriented module.
 
 =head3 get_stops ( $DIRECTION )
 
+our @ATTR = qw(	id direction_out direction_in direction_out_link direction_in_link
+		description_out description_in operator operator_ph );
 
 
 =head1 AUTHOR
