@@ -71,13 +71,6 @@ sub pretty_print {
 		print "+\n";
 		$c++;
 	}
-	#@s	= map { sprintf("| %-6s |\n", $_ ) } @s;
-	#$s[$i]	= "===== Next service =====\n"
-	#	. "        $n\n"
-	#	. "========================\n";
-	#@s	= grep { /:/ } @s;
-	#push @s, ""; unshift @s, "";
-	#print join "+--------+\n", @s;
 }
 
 1;
@@ -169,6 +162,13 @@ using the stop IDs as the hash keys.
 		->get_outbound_tt
 		->get_schedule_by_stop_name( 'burwood' )
 		->as_list;
+
+=head3 pretty_print ()
+
+Prints a formatted version of the complete timetable.
+Note that for timetables with a large number of service
+times, this method will produce B<very> wide output that
+may not be viewable even on large screens.
 
 =head1 AUTHOR
 
