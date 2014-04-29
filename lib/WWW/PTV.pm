@@ -78,6 +78,7 @@ sub get_route_by_id {
 	#my $t		= HTML::TreeBuilder->new_from_file( './metro_train_route_1' );
 	my %route	= (id => $id);
 	my $r_link	= $t->look_down( _tag => 'div', id => 'content' );
+	$route{name}	= $t->look_down( _tag => 'h1' )->as_text;
 	( $route{direction_in}, $route{direction_out} ) 
 			= $r_link->look_down( _tag => 'a' );
 
