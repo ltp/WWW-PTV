@@ -43,10 +43,10 @@ sub __get_tt {
         my( $self, $direction ) = @_; 
 	return unless $direction =~ /(in|out)/;
 
-	my $tt = $self->__request( ( $direction eq 'out' ? $self->{direction_out_link} : $self->{direction_in} ) );
-	my $t = HTML::TreeBuilder->new_from_content( $tt );
-	#my $tt = HTML::TreeBuilder->new_from_file( './metro_train_route_1_tt' );
-	#my $t = $tt;
+	#my $tt = $self->__request( ( $direction eq 'out' ? $self->{direction_out_link} : $self->{direction_in} ) );
+	#my $t = HTML::TreeBuilder->new_from_content( $tt );
+	my $tt = HTML::TreeBuilder->new_from_file( './metro_train_route_1_tt' );
+	my $t = $tt;
 
 	for ( $t->look_down( _tag => 'meta' ) ) {
 		if( ( defined $_->attr( 'http-equiv' ) ) and ( $_->attr( 'http-equiv' ) eq 'refresh' ) ) {
@@ -96,6 +96,8 @@ sub __get_tt {
 	}
 
 	my $ret = WWW::PTV::TimeTable->new( \@stop_names, \@stop_links, $stop_times );
+	print "Setting self->{timetable}->{$direction} to $ret\n";
+	$self->{timetable}->{$direction} = $ret;
 	return $ret;
 }
 
@@ -109,6 +111,13 @@ sub __request {
 	croak 'Unable to retrieve content: ' . $res->status_line
 }
 
+sub get_stops {
+	my ($self, $direction) = @_;
+	$direction ||= 'out';
+	$self->{timetable}->{$direction} || $self->__get_tt($direction);
+	return $self->{timetable}->{$direction}->stop_names_and_ids;
+}
+
 1;
 
 __END__
@@ -117,11 +126,7 @@ __END__
 
 =head1 NAME
 
-WWW::PTV::Route - Perl class for Public Transport Victoria (PTV) routes
-
-=head1 VERSION
-
-Version 0.01
+WWW::PTV::Route - Class for operations with Public Transport Victoria (PTV) routes
 
 =cut
 
@@ -143,6 +148,9 @@ if you don't export anything, such as for a purely object-oriented module.
 
 =head1 SUBROUTINES/METHODS
 
+=head3 get_stops ( $DIRECTION )
+
+
 
 =head1 AUTHOR
 
@@ -153,8 +161,6 @@ Luke Poskitt, C<< <ltp at cpan.org> >>
 Please report any bugs or feature requests to C<bug-www-ptv-route at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-PTV-Route>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
-
-
 
 
 =head1 SUPPORT
