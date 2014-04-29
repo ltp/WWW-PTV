@@ -51,6 +51,35 @@ sub get_schedule_by_stop_name {
 	} @{ $self->{stop_names} };
 }
 
+sub pretty_print {
+	my $self= shift;
+	my @t	= localtime(time);
+	my @d	= qw(Sunday Monday Tuesday Wednesday Thursday Friday Saturday 
+		     Sunday);
+	my @m	= qw(January February March April May June July August September 
+		     October November December);
+	printf("Current local time and date is: %s %s %s %02d:%02d %s\n",
+		$d[$t[6]], $t[3], $m[$t[4]], $t[2], $t[1], ($t[5]+1900));
+	my $c = 0;
+
+	foreach my $s ( @{ $self->{stop_times} } ) {
+		printf( "| %-50s |", @{ $self->{stop_names} }[$c] );
+		map { printf( "%5s|", $_ ) } @{ @{ $self->{stop_times} }[$c] };
+		print "\n+";
+		my $l = ( 54 + ( 7 * scalar @{ @{ $self->{stop_times} }[$c] } ) ) - 2;
+		print "-"x$l;
+		print "+\n";
+		$c++;
+	}
+	#@s	= map { sprintf("| %-6s |\n", $_ ) } @s;
+	#$s[$i]	= "===== Next service =====\n"
+	#	. "        $n\n"
+	#	. "========================\n";
+	#@s	= grep { /:/ } @s;
+	#push @s, ""; unshift @s, "";
+	#print join "+--------+\n", @s;
+}
+
 1;
 
 __END__
