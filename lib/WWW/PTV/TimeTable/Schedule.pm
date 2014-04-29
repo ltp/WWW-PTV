@@ -6,7 +6,7 @@ use warnings;
 sub new {
 	my ($class, $schedule) = @_;
 	my $self = bless {}, $class;
-	$self->{schedule}	= $schedule;
+	$self->{schedule} = $schedule;
 	return $self
 }
 
@@ -16,8 +16,8 @@ sub as_list {
 
 sub next {
 	my ($self, $n, $i) = @_;
-	$n or $n = 1;
-	$i or $i = 0;
+	$n ||= 1;
+	$i ||= 0;
 	my(@res,$c,$l);
 	my($h,$m) = (localtime(time))[2,1];
 
