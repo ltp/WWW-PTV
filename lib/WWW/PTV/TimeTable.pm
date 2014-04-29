@@ -28,6 +28,12 @@ sub stop_names {
 	return @{ $_[0]->{stop_names} }
 }
 
+sub stop_names_and_ids {
+	my %res;
+	@res{ @{$_[0]->{stop_ids}} } = @{ $_[0]->{stop_names} };
+	return %res;
+}
+
 sub get_schedule_by_stop_id {
 	return WWW::PTV::TimeTable::Schedule->new( $_[0]->{map}{$_[1]} )
 }
@@ -107,6 +113,11 @@ Returns a list of in order stop IDs for this route in the selected direction.
 	
 	print "This service will be stopping at : " 
 		. join ", ", $timetable->stop_names . "\n";
+
+=head3 stop_names_and_ids ()
+
+Returns a hash containing a mapping of stop IDs to stop names
+using the stop IDs as the hash keys.
 
 =head3 get_schedule_by_stop_id ( $ID )
 
