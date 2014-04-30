@@ -10,8 +10,8 @@ use Carp qw(croak);
 
 our $STOP = {};
 our $VERSION = '0.01';
-our @ATTR = qw(	id name direction_out direction_in direction_out_link direction_in_link
-		description_out description_in operator operator_ph );
+our @ATTR = qw(	id direction_out direction_in direction_out_link direction_in_link
+		description_out description_in name operator operator_ph );
 
 foreach my $attr ( @ATTR ) { 
         {   
@@ -36,6 +36,8 @@ sub new {
 
         return $self
 }
+
+sub get_inbound_tt { $_[0]->__get_tt( 'in' ) } 
 
 sub get_outbound_tt { $_[0]->__get_tt( 'out' ) } 
 
@@ -110,7 +112,7 @@ sub __request {
 	croak 'Unable to retrieve content: ' . $res->status_line
 }
 
-sub get_stops {
+sub get_stop_names_and_ids {
 	my ($self, $direction) = @_;
 	$direction ||= 'out';
 	$self->{timetable}->{$direction} || $self->__get_tt($direction);
@@ -135,21 +137,74 @@ WWW::PTV::Route - Class for operations with Public Transport Victoria (PTV) rout
 	my $ptv = WWW::PTV->new();
 
 	# Return a WWW::PTV::Route object for route ID 1
-	my $route = 
-    ...
+	my $route = $ptv->get_route_by_id(1);
 
-=head1 EXPORT
+	# Print the route name and outbound description
+	print $route->name .":". $route->description ."\n";
 
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+	# Get the route outbound timetable as a WWW::PTV::TimeTable object
+	my $tt = $route->get_outbound_tt;
 
-=head1 SUBROUTINES/METHODS
+	# Get the route stop names and IDs as a hash in the inbound direction
+	my %stops = $route->get_stop_names_and_ids( 'in' );
 
-=head3 get_stops ( $DIRECTION )
 
-our @ATTR = qw(	id direction_out direction_in direction_out_link direction_in_link
-		description_out description_in operator operator_ph );
+=head1 METHODS
 
+=head3 id ()
+
+Returns the route numerical ID.
+
+=head3 direction_out ()
+
+Returns the outbound route description - this is freeform text that will probably
+take the form 'To $LINE_NAME/$SUBURB_NAME/$LOCALITY'.
+
+=head3 direction_in ()
+
+Returns the inbound route description - this is freeform text that will probably
+take the form 'To $LINE_NAME/$SUBURB_NAME/$LOCALITY'.
+
+=head3 direction_out ()
+
+Returns the outbound route description.
+
+=head3 direction_in_link ()
+
+Returns the URI for the timetable for the route in the inbound direction.
+
+=head3 direction_out_link ()
+
+Returns the URI for the timetable for the route in the outbound direction.
+
+=head3 description_in ()
+
+Returns the inbound route description - this is freeform text that typically
+describes the major stops of the route and major direction changes.
+
+=head3 description_out ()
+
+Returns the outbound route description - this is freeform text that typically
+describes the major stops of the route and major direction changes.
+
+=head3 get_inbound_tt ()
+
+Returns the inbound timetable for the route as a L<WWW::PTV::TimeTable> object.
+
+=head3 get_outbound_tt ()
+
+Returns the outbound timetable for the route as a L<WWW::PTV::TimeTable> object.
+
+=head3 get_stop_names_and_ids ( $DIRECTION )
+
+
+=head3 operator ()
+
+Returns the line operator (i.e. the service provider).
+
+=head3 operator_ph ()
+
+Returns the phone number of the line operator.
 
 =head1 AUTHOR
 
@@ -191,13 +246,9 @@ L<http://search.cpan.org/dist/WWW-PTV-Route/>
 
 =back
 
-
-=head1 ACKNOWLEDGEMENTS
-
-
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2012 Luke Poskitt.
+Copyright 2014 Luke Poskitt.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published
