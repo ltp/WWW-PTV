@@ -47,7 +47,7 @@ sub __get_tt {
 
 	my $tt = $self->__request( ( $direction eq 'out' ? $self->{direction_out_link} : $self->{direction_in} ) );
 	my $t = HTML::TreeBuilder->new_from_content( $tt );
-	#my $tt = HTML::TreeBuilder->new_from_file( './metro_train_route_1_tt' );
+	#my $tt = HTML::TreeBuilder->new_from_file( './regional_bus_route_geelong_19_tt_to_geelong_full' );
 	my $t = $tt;
 
 	for ( $t->look_down( _tag => 'meta' ) ) {
@@ -60,8 +60,9 @@ sub __get_tt {
 		}
 	}
 
-	$tt = $t->look_down( _tag => 'img', title => 'Expand' );
+	#$tt = $t->look_down( _tag => 'img', title => 'Expand' );
 	#( $tt = $t->look_down( _tag => 'img', title => 'Expand' )->attr( 'onclick' ) ) =~ s/^.*\('//;
+	$tt = $t->look_down( _tag => 'img', title => 'Expand' )->attr( 'onclick' ) =~ /TTB_REQUEST/;
 
 	if ( $tt ) {
 		( $tt = $tt->attr( 'onclick' ) ) =~ s/^.*\('//;
