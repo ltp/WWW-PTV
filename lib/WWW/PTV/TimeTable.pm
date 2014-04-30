@@ -29,9 +29,13 @@ sub stop_names {
 }
 
 sub stop_names_and_ids {
-	my %res;
-	@res{ @{$_[0]->{stop_ids}} } = @{ $_[0]->{stop_names} };
-	return %res;
+	my ($self, $type) = @_;
+	$type ||= 'array';
+	$type = 'array' unless $type =~ /^(array|hash)$/;
+	my @n = @{$self->{stop_names}};
+	my @i = @{$self->{stop_ids}};
+	my $c = 0;
+	return map { [ $_, $n[$c++] ] } @i
 }
 
 sub get_schedule_by_stop_id {
@@ -138,8 +142,9 @@ Returns a list of in order stop IDs for this route in the selected direction.
 
 =head3 stop_names_and_ids ()
 
-Returns a hash containing a mapping of stop IDs to stop names
-using the stop IDs as the hash keys.
+Returns a list of lists with each sublist containing the stop ID as the first 
+element, and the station name as the second providing an in-order mapping
+of stop IDs and names.
 
 =head3 get_schedule_by_stop_id ( $ID )
 
