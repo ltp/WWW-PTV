@@ -45,9 +45,9 @@ sub __get_tt {
         my( $self, $direction ) = @_; 
 	return unless $direction =~ /(in|out)/;
 
-	#my $tt = $self->__request( ( $direction eq 'out' ? $self->{direction_out_link} : $self->{direction_in} ) );
-	#my $t = HTML::TreeBuilder->new_from_content( $tt );
-	my $tt = HTML::TreeBuilder->new_from_file( './metro_train_route_1_tt' );
+	my $tt = $self->__request( ( $direction eq 'out' ? $self->{direction_out_link} : $self->{direction_in} ) );
+	my $t = HTML::TreeBuilder->new_from_content( $tt );
+	#my $tt = HTML::TreeBuilder->new_from_file( './metro_train_route_1_tt' );
 	my $t = $tt;
 
 	for ( $t->look_down( _tag => 'meta' ) ) {
