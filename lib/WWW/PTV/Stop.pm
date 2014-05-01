@@ -36,9 +36,9 @@ sub new {
 
 sub get_routes {
 	my $self = shift;
-	#use Data::Dumper; print Dumper( $self->routes );
-	#return;
-	return keys %{ { map { $_->{route_no} => 1  } @{ $self->{routes} } } }
+	return wantarray 
+		? @{ $self->{routes} }
+		: $self->{routes}
 }
 
 1;
