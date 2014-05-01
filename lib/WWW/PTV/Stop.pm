@@ -34,6 +34,10 @@ sub new {
 	return $self
 }
 
+sub get_route_ids {
+	map { $_->{route_no} } @{ $_[0]->{routes} }
+}
+
 sub get_routes {
 	my $self = shift;
 	return wantarray 
