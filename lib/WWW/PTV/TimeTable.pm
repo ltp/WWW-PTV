@@ -39,7 +39,8 @@ sub stop_names_and_ids {
 }
 
 sub get_schedule_by_stop_id {
-	return WWW::PTV::TimeTable::Schedule->new( $_[0]->{map}{$_[1]} )
+	defined $_[0]->{map}{$_[1]} 
+	and return WWW::PTV::TimeTable::Schedule->new( $_[0]->{map}{$_[1]} )
 }
 
 sub get_schedule_by_stop_name {
