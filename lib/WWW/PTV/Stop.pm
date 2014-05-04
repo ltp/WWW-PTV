@@ -185,6 +185,27 @@ typically has a value of either 'Yes' or 'No'.
 Returns a value indicating if the stop has public toilet facilities - this 
 typically has a value of either 'Yes' or 'No'.
 
+=head3 get_routes
+
+Returns the routes servicing this stop as an array of hashes, where each
+hash contains three key/value pairs;
+
+=over4
+
+=item *
+
+id - the route numerical identifier.
+
+=item *
+
+name - a descriptive name of the route.
+
+=item *
+
+type - the type of transport (e.g. bus, train).
+
+=back
+
 =head3 seating 
 
 Returns a value indicating if the stop has seating facilities - this 
