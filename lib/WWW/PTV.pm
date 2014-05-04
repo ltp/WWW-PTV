@@ -73,9 +73,10 @@ sub get_regional_bus_routes {
 sub get_route_by_id {
 	my( $self, $id )= @_;
 	$id or return "Mandatory parameter id not given";
-	my $r 		= $self->__request( "/route/view/$id" );
-	my $t		= HTML::TreeBuilder->new_from_content( $r );
-	#my $t		= HTML::TreeBuilder->new_from_file( './metro_train_route_1' );
+	#my $r 		= $self->__request( "/route/view/$id" );
+	#my $t		= HTML::TreeBuilder->new_from_content( $r );
+	my $t		= HTML::TreeBuilder->new_from_file( './metro_train_route_1' );
+	#my $t		= HTML::TreeBuilder->new_from_file( './regional_bus_route_geelong_19' );
 	my %route	= (id => $id);
 	my $r_link	= $t->look_down( _tag => 'div', id => 'content' );
 	$route{name}	= $t->look_down( _tag => 'h1' )->as_text;
@@ -110,7 +111,7 @@ sub get_stop_by_id {
 	#my $r				= $self->__request( "/stop/view/$id" );
 	#print "Request done\n";
 	#my $t				= HTML::TreeBuilder->new_from_content( $r );
-	my $t				= HTML::TreeBuilder->new_from_file( './19843' );
+	my $t				= HTML::TreeBuilder->new_from_file( './30801' );
 	my %stop			= (id => $id );
 	#$stop{fn_org}			= $t->look_down( _tag => 'h1',   class => 'fn org' )->as_text;
 	#$stop{fn_org}	 		=~ /\w+/ or return "Stop id ($id) appears to be invalid";
@@ -175,10 +176,9 @@ sub get_stop_by_id {
 
 	foreach my $line ( $t->look_down( _tag => 'div', 'data-cookie' => 'stop-line-timetables' )
 			     ->look_down( _tag => 'div', class => 'timetable-row' ) ) {
-		my $ref = { route_no => $line->look_down( _tag => 'a' )->attr( 'href' ) =~ /^.*\/(.*)/ };
-		$ref->{ route_desc } = $line->look_down( _tag => 'a' )->as_text;
-		$ref->{ route_type } = _get_line_type( $line->look_down( _tag => 'img' )->attr( 'src' ) );
-		$ref->{ _is_stub }   = 1;
+		my $ref = { id => $line->look_down( _tag => 'a' )->attr( 'href' ) =~ /^.*\/(.*)/ };
+		$ref->{ name } = $line->look_down( _tag => 'a' )->as_text;
+		$ref->{ type } = _get_line_type( $line->look_down( _tag => 'img' )->attr( 'src' ) );
 		push @{ $stop{routes} }, $ref
 	}
 
