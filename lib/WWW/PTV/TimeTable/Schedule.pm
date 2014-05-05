@@ -41,7 +41,7 @@ sub next {
 		}
 	}
 
-	return \@res
+	return ( @res ? \@res : 0 )
 }
 
 sub index_of_next {
