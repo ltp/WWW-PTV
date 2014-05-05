@@ -129,9 +129,10 @@ sub get_stop_by_id {
 						->look_down( _tag => 'a' )
 						->as_text;
 
-	( $stop{municipiality} )	= $t->look_down( _tag	=> 'table', class => 'stationSummary' )
+	( $stop{municipiality_id} )	= $t->look_down( _tag	=> 'table', class => 'stationSummary' )
 						->look_down( _tag => 'a' )
 						->attr( 'href' );
+	( $stop{municipiality_id} )	= $stop{municipiality_id} =~ /\/(\d.*)$/;
 
 	$stop{zone}			= ( $t->look_down( _tag => 'table', class => 'stationSummary' )
 						->look_down( _tag => 'td' )
