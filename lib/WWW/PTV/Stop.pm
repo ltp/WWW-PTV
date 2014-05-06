@@ -34,8 +34,12 @@ sub new {
 	return $self
 }
 
+sub get_route_names {
+	map { $_->{name} } @{ $_[0]->{routes} }
+}
+
 sub get_route_ids {
-	map { $_->{route_no} } @{ $_[0]->{routes} }
+	map { $_->{id} } @{ $_[0]->{routes} }
 }
 
 sub get_routes {
@@ -205,6 +209,22 @@ name - a descriptive name of the route.
 type - the type of transport (e.g. bus, train).
 
 =back
+
+=head3 get_route_ids
+
+Returns an array containing the route IDs that service this stop.
+
+Please note that these route IDs are the PTV defined route IDs and
+not the collaquial IDs that may be assigned to the service.
+e.g. "The number 19 bus".
+
+=head3 get_route_names
+
+Returns an array containing the route names that service this stop.
+
+These names often contain teh collaquial route ID of the service in
+a free text format. 
+e.g. "235 - City - Fishermans Bend via Lorimer Street".
 
 =head3 seating 
 
