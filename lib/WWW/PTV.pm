@@ -111,7 +111,7 @@ sub get_stop_by_id {
 	#my $r				= $self->__request( "/stop/view/$id" );
 	#print "Request done\n";
 	#my $t				= HTML::TreeBuilder->new_from_content( $r );
-	my $t				= HTML::TreeBuilder->new_from_file( './30801' );
+	my $t				= HTML::TreeBuilder->new_from_file( './45470' );
 	my %stop			= (id => $id );
 	#$stop{fn_org}			= $t->look_down( _tag => 'h1',   class => 'fn org' )->as_text;
 	#$stop{fn_org}	 		=~ /\w+/ or return "Stop id ($id) appears to be invalid";
@@ -188,6 +188,20 @@ sub get_stop_by_id {
 	$STOP{ $id } = WWW::PTV::Stop->new( %stop );
 
 	return $STOP{ $id }
+}
+
+sub get_area_by_id {
+	my( $self, $id )= @_;
+	$id or return "Mandatory parameter id not given";
+	#my $r				= $self->__request( "/location/view/$id" );
+	#my $t				= HTML::TreeBuilder->new_from_content( $r );
+	my $t				= HTML::TreeBuilder->new_from_file( './local_area_19' );
+	my %area;
+	$area{name}			= $t->look_down( _tag => 'h1' )->as_text;
+	@{ $area{towns}}			= split /, /, $t->look_down( _tag => 'p' )->as_text;
+	use Data::Dumper;
+	print Dumper(%area);
+	
 }
 
 sub _get_line_type {
