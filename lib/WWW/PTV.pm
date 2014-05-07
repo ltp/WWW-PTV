@@ -201,6 +201,20 @@ sub get_area_by_id {
 	my %area 			= ( id => $id );
 	$area{name}			= $t->look_down( _tag => 'h1' )->as_text;
 	@{ $area{suburbs}}		= split /, /, $t->look_down( _tag => 'p' )->as_text;
+	my $t_type;
+
+	foreach my $service ( $t->look_down( _tag => 'div', id => 'content' )->look_down( _tag => 'div' ) ) {
+		my $type = $service->look_down( _tag => 'h3' );
+
+		if ( $type->as_text ne '' ) { $t_type = $type->as_text }
+
+		@{ $area{service}{names}{$t_type} } 
+			= map { $_->as_text } $service->look_down( _tag => 'li' );
+
+		@{ $area{service}{links}{$t_type} } 
+			= map { $_->attr( 'href' ) } $service->look_down( _tag => 'a' );
+	}
+
 	return WWW::PTV::Area->new( %area );
 }
 
