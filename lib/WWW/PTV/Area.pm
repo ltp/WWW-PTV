@@ -9,6 +9,7 @@ sub new {
 	$self->{id}	= $args{id};
 	$self->{name}	= $args{name};
 	$self->{suburbs}= $args{suburbs};
+	$self->{service}= $args{service};
 	return $self
 }
 
