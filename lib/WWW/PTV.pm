@@ -7,6 +7,7 @@ use LWP;
 use WWW::Mechanize;
 use HTML::TreeBuilder;
 use Carp qw(croak);
+use WWW::PTV::Area;
 use WWW::PTV::Stop;
 use WWW::PTV::Route;
 
@@ -195,13 +196,12 @@ sub get_area_by_id {
 	$id or return "Mandatory parameter id not given";
 	#my $r				= $self->__request( "/location/view/$id" );
 	#my $t				= HTML::TreeBuilder->new_from_content( $r );
-	my $t				= HTML::TreeBuilder->new_from_file( './local_area_19' );
-	my %area;
+	#my $t				= HTML::TreeBuilder->new_from_file( './local_area_19' );
+	my $t				= HTML::TreeBuilder->new_from_file( './area_30' );
+	my %area 			= ( id => $id );
 	$area{name}			= $t->look_down( _tag => 'h1' )->as_text;
-	@{ $area{towns}}			= split /, /, $t->look_down( _tag => 'p' )->as_text;
-	use Data::Dumper;
-	print Dumper(%area);
-	
+	@{ $area{suburbs}}		= split /, /, $t->look_down( _tag => 'p' )->as_text;
+	return WWW::PTV::Area->new( %area );
 }
 
 sub _get_line_type {
