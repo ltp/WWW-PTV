@@ -37,6 +37,10 @@ sub service_names {
 	return $_[0]->{service}{names}
 }
 
+sub service_links {
+	return $_[0]->{service}{links}
+}
+
 1;
 
 __END__
@@ -56,7 +60,12 @@ Victoria (PTV) areas.
 
 	print "Services in this area include:\n - ";
 	my @service_types = $area->service_types;
-	my @service_names = $area
-	map {
+	my $service_names = $area->service_names;
+	my $service_links = $area->service_links;
+	
+	foreach my $type ( @service_types ) {
+		
+	}
+	
 
 =cut
