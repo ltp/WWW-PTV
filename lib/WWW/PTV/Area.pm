@@ -29,6 +29,34 @@ sub towns {
 	$_[0]->suburbs
 }
 
+sub service_types {
+	return keys $_[0]->{service}{names}
+}
+
+sub service_names {
+	return $_[0]->{service}{names}
+}
+
 1;
 
 __END__
+
+=pod
+
+=head1 NAME WWW::PTV::Area - a utility class for working with Public Transport 
+Victoria (PTV) areas.
+
+=head1 SYNOPSIS
+
+	my $ptv = WWW::PTV->new;
+	my $area = $ptv->get_area_by_id(30);
+
+	print "The ${ $area->name } area encapsulates the following suburbs and towns:\n - ";
+	print join "\n - ", $area->suburbs;
+
+	print "Services in this area include:\n - ";
+	my @service_types = $area->service_types;
+	my @service_names = $area
+	map {
+
+=cut
