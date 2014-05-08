@@ -18,7 +18,7 @@ sub id {
 }
 
 sub name {
-	return $_[0]->name
+	return $_[0]->{name}
 }
 
 sub suburbs {
@@ -55,17 +55,137 @@ Victoria (PTV) areas.
 	my $ptv = WWW::PTV->new;
 	my $area = $ptv->get_area_by_id(30);
 
-	print "The ${ $area->name } area encapsulates the following suburbs and towns:\n - ";
-	print join "\n - ", $area->suburbs;
+	print "\n\nThe ". $area->name ." area encapsulates the following suburbs and towns:\n - ";
+	print join "\n - ", @{ $area->suburbs };
 
-	print "Services in this area include:\n - ";
+	print "\n\nServices in this area include:\n";
 	my @service_types = $area->service_types;
 	my $service_names = $area->service_names;
 	my $service_links = $area->service_links;
-	
+
 	foreach my $type ( @service_types ) {
-		
+		print "\n - $type\n";
+
+		foreach my $name ( @{ $service_names->{ $type } } ) {
+			print "\t\t - $name\n"
+		}
 	}
-	
+
+=head1 METHODS
+
+=head3 id ()
+
+Returns the area numerical identifier.
+
+=head3 name ()
+
+Returns the area name.
+
+=head3 suburbs ()
+
+Returns a list of the suburbs and towns encompassed by this area - the suburb
+and town names are typically free-form text and are common names for suburbs 
+or towns e.g. Carlton, South Wharf, Echuca, etc.
+
+=head3 towns ()
+
+This method is a synonym for the B<suburbs()> method.
+
+=head3 service_types ()
+
+Returns a list of the service types operating within this area - the service
+names are free-form text describing the service e.g. Train Stations, 
+Metropolitan Trams, etc.
+
+=head3 service_names ()
+
+Returns a hash containing the service names servicing the area as lists 
+indexed by the service type;
+
+	'Metropolitan Trains' => [
+				  'Alamein Line',
+				  'Belgrave Line',
+				  'Craigieburn Line',
+				  ...
+				 ],
+	'Metropolitan Trams' => [
+				 '200 - Bulleen',
+				 ...
+				],
+	...
+
+=head3 service_links ()
+
+Returns a hash containing URLs for the routes and stops servicing the area -
+these lists positionally correspond to the items in the lists returned for
+service names as returned by the B<service_names()> method.
+
+	'Metropolitan Trains' => [
+				  'http://ptv.vic.gov.au/route/view/1',
+				  'http://ptv.vic.gov.au/route/view/2',
+				  'http://ptv.vic.gov.au/route/view/3',
+				  ...
+				 ],
+	'Metropolitan Trams' => [
+				 'http://ptv.vic.gov.au/route/view/7520',
+				 ...
+				],
+	...
+
+So with minimal effort, it is possible to reliably retrieve the route name and
+route URL by doing something like;
+
+	print "<a href=\"@{ $service_links->{'Metropolitan Trains'} }[0]\">"
+	    . "@{ $service_names->{'Metropolitan Trains'} }[0]</a>\n";
+
+=head1 AUTHOR
+
+Luke Poskitt, C<< <ltp at cpan.org> >>
+
+=head1 BUGS
+
+Please report any bugs or feature requests to C<bug-www-ptv-area at rt.cpan.org>, or through
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-PTV-Area>.  I will be notified, and then you'll
+automatically be notified of progress on your bug as I make changes.
+
+
+=head1 SUPPORT
+
+You can find documentation for this module with the perldoc command.
+
+    perldoc WWW::PTV::Area
+
+
+    You can also look for information at:
+
+=over 4
+
+=item * RT: CPAN's request tracker (report bugs here)
+
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=WWW-PTV-Area>
+
+=item * AnnoCPAN: Annotated CPAN documentation
+
+L<http://annocpan.org/dist/WWW-PTV-Area>
+
+=item * CPAN Ratings
+
+L<http://cpanratings.perl.org/d/WWW-PTV-Area>
+
+=item * Search CPAN
+
+L<http://search.cpan.org/dist/WWW-PTV-Area/>
+
+=back
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2014 Luke Poskitt.
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of either: the GNU General Public License as published
+by the Free Software Foundation; or the Artistic License.
+
+See http://dev.perl.org/licenses/ for more information.
 
 =cut
