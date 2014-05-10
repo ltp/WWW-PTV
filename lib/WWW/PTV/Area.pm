@@ -41,6 +41,23 @@ sub service_links {
 	return $_[0]->{service}{links}
 }
 
+sub services_by_type {
+	my ($self, $type) = @_;
+	$type or return;
+
+}
+
+sub services {
+	my $self = shift;
+	my @res;
+	my @service_names = $self->service_names;
+	my @service_links = $self->service_links;
+
+	foreach my $type ( $self->service_types ) {
+		
+	}
+}
+
 1;
 
 __END__
@@ -121,13 +138,13 @@ these lists positionally correspond to the items in the lists returned for
 service names as returned by the B<service_names()> method.
 
 	'Metropolitan Trains' => [
-				  'http://ptv.vic.gov.au/route/view/1',
-				  'http://ptv.vic.gov.au/route/view/2',
-				  'http://ptv.vic.gov.au/route/view/3',
+				  'http://ptv.vic.gov.au/route/view/1', # Alamein Line
+				  'http://ptv.vic.gov.au/route/view/2', # Belgrave Line
+				  'http://ptv.vic.gov.au/route/view/3', # Craigieburn Line
 				  ...
 				 ],
 	'Metropolitan Trams' => [
-				 'http://ptv.vic.gov.au/route/view/7520',
+				 'http://ptv.vic.gov.au/route/view/7520', # Route 200 - Bulleen
 				 ...
 				],
 	...
