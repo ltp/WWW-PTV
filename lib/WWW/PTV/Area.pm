@@ -50,12 +50,24 @@ sub services_by_type {
 sub services {
 	my $self = shift;
 	my @res;
-	my @service_names = $self->service_names;
-	my @service_links = $self->service_links;
+	my $service_names = $self->service_names;
+	my $service_links = $self->service_links;
 
+	# { name => 'Name', link => 'link', type => 'Type' }
 	foreach my $type ( $self->service_types ) {
-		
+		my $c = 0;
+		my $r;
+
+		foreach my $service ( @{ $service_names->{$type} } ) {
+			my $r = { type => $type,
+				  name => @{ $service_names->{ $type } }[ $c ],
+				  link => @{ $service_links->{ $type } }[ $c ] };
+			push @res, $r;
+			$c++;
+		}
 	}
+
+	return @res;
 }
 
 1;
