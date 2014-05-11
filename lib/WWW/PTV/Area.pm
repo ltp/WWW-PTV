@@ -167,6 +167,17 @@ route URL by doing something like;
 	print "<a href=\"@{ $service_links->{'Metropolitan Trains'} }[0]\">"
 	    . "@{ $service_names->{'Metropolitan Trains'} }[0]</a>\n";
 
+=head3 services
+
+Returns all services for the area as a list of anonymous hashes having the sttructure:
+
+	{ 
+	  name => 'Service Name',
+	  type => 'Service Type',
+	  link => 'URI to service link'
+	}
+
+
 =head1 AUTHOR
 
 Luke Poskitt, C<< <ltp at cpan.org> >>
