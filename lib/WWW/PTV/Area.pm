@@ -70,6 +70,19 @@ sub services {
 	return @res;
 }
 
+sub services_like {
+	my ( $self, %args ) = @_;
+	$args{type} or $args{name} or return;
+	$args{type} ||= 'xxxXXXxxx';
+	$args{name} ||= 'xxxXXXxxx';
+	my @res;
+	my @services = $self->services;
+
+	return grep { $_->{type} =~ /$args{type}/i
+	           or $_->{name} =~ /$args{name}/i
+		} $self->services
+}
+
 1;
 
 __END__
@@ -169,7 +182,8 @@ route URL by doing something like;
 
 =head3 services
 
-Returns all services for the area as a list of anonymous hashes having the sttructure:
+Returns all services for the area as a list of anonymous hashes having the 
+structure:
 
 	{ 
 	  name => 'Service Name',
@@ -177,6 +191,20 @@ Returns all services for the area as a list of anonymous hashes having the sttru
 	  link => 'URI to service link'
 	}
 
+=head3 services_like ( %args )
+
+Returns a list of anonymous hashes having the structure described in the 
+B<services> method above matching the search criteria defined by %args.
+
+The two valid search criteria accepted are I<name> and I<type>, and any 
+services matching these criteria will be returned;
+
+	# e.g. Return only services having a description like "University"
+	
+	my @services = $area->services_like( name => 'university' );
+
+Note that matching is case-insensitive.
+	
 
 =head1 AUTHOR
 
