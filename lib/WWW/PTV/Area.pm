@@ -72,15 +72,12 @@ sub services {
 
 sub services_like {
 	my ( $self, %args ) = @_;
-	$args{type} or $args{name} or return;
-	$args{type} ||= 'xxxXXXxxx';
-	$args{name} ||= 'xxxXXXxxx';
-	my @res;
-	my @services = $self->services;
+	$args{type} or return grep { $_->{name} =~ /$args{name}/i } $self->services;
+	$args{name} or return grep { $_->{type} =~ /$args{type}/i } $self->services;
 
-	return grep { $_->{type} =~ /$args{type}/i
-	           or $_->{name} =~ /$args{name}/i
-		} $self->services
+	return grep {  	  $_->{type} =~ /$args{type}/i
+		      and $_->{name} =~ /$args{name}/i
+	       } $self->services
 }
 
 1;
@@ -191,7 +188,7 @@ structure:
 	  link => 'URI to service link'
 	}
 
-=head3 services_like ( %args )
+=head3 services_like ( { name => $name, type => $type } )
 
 Returns a list of anonymous hashes having the structure described in the 
 B<services> method above matching the search criteria defined by %args.
