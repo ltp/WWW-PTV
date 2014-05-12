@@ -194,11 +194,16 @@ Returns a list of anonymous hashes having the structure described in the
 B<services> method above matching the search criteria defined by %args.
 
 The two valid search criteria accepted are I<name> and I<type>, and any 
-services matching these criteria will be returned;
+services matching these criteria will be returned.  If both criteria are
+provided, then only services matching both criteria are returned.
 
-	# e.g. Return only services having a description like "University"
-	
+	# Return only services having a description like "University"
 	my @services = $area->services_like( name => 'university' );
+
+	# Return only services having a description like "University"
+	# and being of a 'bus' service type.
+	my @services = $area->services_like( name => 'university',
+					     type => 'bus' );
 
 Note that matching is case-insensitive.
 	
