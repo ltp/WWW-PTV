@@ -74,6 +74,9 @@ sub get_regional_bus_routes {
 sub get_route_by_id {
 	my( $self, $id )= @_;
 	$id or return "Mandatory parameter id not given";
+
+	return $CACHE->{ROUTE}->{$id} if ( $self->{cache} and $CACHE->{ROUTE}->{$id} );
+
 	#my $r 		= $self->__request( "/route/view/$id" );
 	#my $t		= HTML::TreeBuilder->new_from_content( $r );
 	my $t		= HTML::TreeBuilder->new_from_file( './metro_train_route_1' );
@@ -99,7 +102,7 @@ sub get_route_by_id {
 	$route{ua}	= $self->{ua};
 	$route{uri}	= $self->{uri};
 	my $route 	= WWW::PTV::Route->new( %route );
-	$CACHE->{ROUTE}->{$id}	= $route if ( $self->{cache} );
+	$CACHE->{ROUTE}->{$id} = $route if ( $self->{cache} );
 	$ROUTE{ $id }	= WWW::PTV::Route->new( %route );
 	return $ROUTE{ $id }
 }
@@ -218,6 +221,24 @@ sub get_area_by_id {
 	return WWW::PTV::Area->new( %area );
 }
 
+sub get_local_areas {
+	my $self = shift;
+	#my $r = $self->__request( '/getting-around/local-areas/' );
+	#my $t = HTML::TreeBuilder->new_from_content( $r );
+	my $t = HTML::TreeBuilder->new_from_file( './local_areas_list' );
+	$t = $t->look_down( _tag => 'div', id => 'content' );
+
+	@{ $self->{local_areas}{names} }
+		= map { $_->as_text } $t->look_down( _tag => 'li' );
+
+	@{ $self->{local_areas}{links} }
+		= map { $_->attr( 'href' ) } $t->look_down( _tag => 'a' );
+
+	my %res;
+	@res{ @{ $self->{local_areas}{names} } } = @{ $self->{local_areas}{links} };
+	return %res
+}
+
 sub _get_line_type {
 	my $obj = shift;
 	$obj =~ s/^.*\/icon//;
@@ -314,6 +335,10 @@ ID as obtained from one of the other methods in this class.
 
 See the L<WWW::Route> page for more detail.
 
+=head3 get_local_areas
+
+Returns a hash containing the defined "local areas" and a URI to the local area web page.
+The hash is indexed by the local area name.
 
 =head1 AUTHOR
 
