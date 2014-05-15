@@ -8,9 +8,9 @@ Version 0.01
 
 SYNOPSIS
 --------
-        use WWW::PTV;
+    use WWW::PTV;
 
-        my $ptv = WWW::PTV->new;
+    my $ptv = WWW::PTV->new;
     
 METHODS
 -------
@@ -28,14 +28,14 @@ that may be used to identify the service by the service operator - the
 ID used in this module refers to the unique ID assigned to the route
 within the context of the PTV website.
 
-	my %routes = $ptv->get_metropolitan_bus_routes;
-	map { printf( "%-6s: %-50s\n", $_, $routes{ $_ } } sort keys %routes;
-
-	# Prints a list of all metropolitan bus route IDs and names. e.g.
-	# 1000  : 814 - Springvale South - Dandenong via Waverley Gardens Shopping Centre, Springvale
-	# 1001  : 815 - Dandenong - Noble Park                      
-	# 1003  : 821 - Southland - Clayton via Heatherton 
-	# ... etc.
+    my %routes = $ptv->get_metropolitan_bus_routes;
+    map { printf( "%-6s: %-50s\n", $_, $routes{ $_ } } sort keys %routes;
+    
+    # Prints a list of all metropolitan bus route IDs and names. e.g.
+    # 1000  : 814 - Springvale South - Dandenong via Waverley Gardens Shopping Centre, Springvale
+    # 1001  : 815 - Dandenong - Noble Park                      
+    # 1003  : 821 - Southland - Clayton via Heatherton 
+    # ... etc.
 
 *  get_regional_bus_routes
 
@@ -45,17 +45,17 @@ route ID.
 Please note that the bus route ID is the PTV designated ID for the route
 and not the service operator ID.
 
-	my %routes = $ptv->get_regional_bus_routes;
-
-	while (( $id, $desc ) = each %routes ) {
-	    print "$id : $desc\n" if ( $desc =~ /Echuca/ )
-	}
-
-	# Prints a list of regional bus routes containing 'Echuca' in the route name - e.g.
-	# 1346 : Echuca - Moama (Route 3 - Circular)
-	# 1345 : Echuca - Echuca East (Route 2 - Circular)
-	# 6649 : Kerang - Echuca via Cohuna (Effective from 18/11/2012)
-	# ... etc.
+    my %routes = $ptv->get_regional_bus_routes;
+    
+    while (( $id, $desc ) = each %routes ) {
+        print "$id : $desc\n" if ( $desc =~ /Echuca/ )
+    }
+    
+    # Prints a list of regional bus routes containing 'Echuca' in the route name - e.g.
+    # 1346 : Echuca - Moama (Route 3 - Circular)
+    # 1345 : Echuca - Echuca East (Route 2 - Circular)
+    # 6649 : Kerang - Echuca via Cohuna (Effective from 18/11/2012)
+    # ... etc.
 
 *  get_metropolitan_tram_routes
 
@@ -75,11 +75,11 @@ route and not the service operator ID.
 
 *  get_route_by_id
  
-	my $route = $ptv->get_route_by_id( 1 );
-
-	print $route->direction_out."\n".$route_description."\n";
-	# Prints the outbound route direction ("To Alamein") and a 
-	# description of the outbound route
+    my $route = $ptv->get_route_by_id( 1 );
+    
+    print $route->direction_out."\n".$route_description."\n";
+    # Prints the outbound route direction ("To Alamein") and a 
+    # description of the outbound route
 
 Returns a WWW::Route object for the given route ID representing a
 transit route.
