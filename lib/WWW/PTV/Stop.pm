@@ -72,7 +72,7 @@ WWW::PTV::Stop - Class for operations with Public Transport Victoria (PTV) stops
 
 =head1 METHODS
 
-=head3 addresss 
+=head3 address
 
 Returns the stop address as a freeform text value.
 
@@ -194,7 +194,7 @@ typically has a value of either 'Yes' or 'No'.
 Returns the routes servicing this stop as an array of hashes, where each
 hash contains three key/value pairs;
 
-=over4
+=over 4
 
 =item *
 
