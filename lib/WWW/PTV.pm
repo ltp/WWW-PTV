@@ -310,14 +310,28 @@ the service operator ID.
 
 Returns a hash containing all metropolitan tram routes indexed by the route ID.
 
-B<PLease note> as per the method above, the route ID is the PTV designated route
+B<Please note> as per the method above, the route ID is the PTV designated route
 and not the service operator ID.
 
 =head2 get_metropolitan_train_routes
 
 Returns a hash containing all metropolitan train routes indexed by the route ID.
 
-B<PLease note> as per the method above, the route ID is the PTV designated route
+B<Please note> as per the method above, the route ID is the PTV designated route
+and not the service operator ID.
+
+=head3 get_vline_bus_routes
+
+Returns a hash containing all V/Line bus routes indexed by the route ID.
+
+B<Please note> as per the method above, the route ID is the PTV designated route
+and not the service operator ID.
+
+=head3 get_vline_train_routes
+
+Returns a hash containing all V/Line train routes indexed by the route ID.
+
+B<Please note> as per the method above, the route ID is the PTV designated route
 and not the service operator ID.
 
 =head2 get_route_by_id
@@ -335,10 +349,19 @@ ID as obtained from one of the other methods in this class.
 
 See the L<WWW::Route> page for more detail.
 
+=head3 get_stop_by_id ( $ID )
+
+Returns the stop identified by the numerical parameter $ID as a L<WWW::PTV::Stop>
+object.  The numerical identifier of a stop is unique.
+
 =head3 get_local_areas
 
 Returns a hash containing the defined "local areas" and a URI to the local area web page.
 The hash is indexed by the local area name.
+
+=head3 get_area_by_id ( $ID ) 
+
+Returns the area identified by the numerical parameter $ID as a L<WWW::PTV::Area> object.
 
 =head1 AUTHOR
 
