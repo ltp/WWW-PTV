@@ -41,12 +41,6 @@ sub service_links {
 	return $_[0]->{service}{links}
 }
 
-sub services_by_type {
-	my ($self, $type) = @_;
-	$type or return;
-
-}
-
 sub services {
 	my $self = shift;
 	my @res;
