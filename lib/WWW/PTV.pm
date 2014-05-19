@@ -255,7 +255,7 @@ __END__
 
 =head1 NAME
 
-WWW::PTV - Perl interface to Public Transport Victoria (PTV) Website
+WWW::PTV - Perl interface to Public Transport Victoria (PTV) Website.
 
 =head1 VERSION
 
@@ -265,13 +265,24 @@ Version 0.01
 
     use WWW::PTV;
 
-    my $ptv = WWW::PTV->new;
+    my $ptv = WWW::PTV->new( cache => 1 );
     
 =head1 METHODS
 
-=head2 new
+=head2 new ( cache => BOOLEAN )
 
-Constructor method - creates a new WWW::PTV object. 
+Constructor method - creates a new WWW::PTV object.  This method accepts an
+optional hashref specifying a single valid parameter; I<cache>, which if
+set to a true value will enable internal object caching.
+
+The default behaviour is not to implement any caching, however it is strongly
+recommended that you enable caching in most implementations.  Caching will
+dramatically improve the performance of repeated method invocations and
+reduce network utilisation, but will increase memory requirements.
+
+If you do not enable caching, then you may wish to consider storing any object
+information in a database, or attempting to limit the frequency, or number, of
+methods invocations.
 
 =head2 get_metropolitan_bus_routes
 
