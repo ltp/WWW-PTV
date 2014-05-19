@@ -12,8 +12,6 @@ use WWW::PTV::Stop;
 use WWW::PTV::Route;
 
 our $VERSION = '0.01';
-our %STOP;
-our %ROUTE;
 our $CACHE;
 
 sub __request {
@@ -103,8 +101,7 @@ sub get_route_by_id {
 	$route{uri}	= $self->{uri};
 	my $route 	= WWW::PTV::Route->new( %route );
 	$CACHE->{ROUTE}->{$id} = $route if ( $self->{cache} );
-	$ROUTE{ $id }	= WWW::PTV::Route->new( %route );
-	return $ROUTE{ $id }
+	return $route
 }
 
 
@@ -112,6 +109,7 @@ sub get_route_by_id {
 sub get_stop_by_id {
 	my( $self, $id )= @_;
 	$id or return "Mandatory parameter id not given";
+	return $CACHE->{STOP}->{$id} if ( $self->{cache} and $CACHE->{STOP}->{$id} );
 	#my $r				= $self->__request( "/stop/view/$id" );
 	#print "Request done\n";
 	#my $t				= HTML::TreeBuilder->new_from_content( $r );
@@ -189,14 +187,16 @@ sub get_stop_by_id {
 
 	$stop{ua} = $self->{ua};
 
-	$STOP{ $id } = WWW::PTV::Stop->new( %stop );
+	my $stop = WWW::PTV::Stop->new( %stop );
+	$CACHE->{STOP}->{$id} = $stop if ( $self->{cache} );
 
-	return $STOP{ $id }
+	return $stop
 }
 
 sub get_area_by_id {
 	my( $self, $id )= @_;
 	$id or return "Mandatory parameter id not given";
+	return $CACHE->{AREA}->{$id} if ( $self->{cache} and $CACHE->{AREA}->{$id} );
 	#my $r				= $self->__request( "/location/view/$id" );
 	#my $t				= HTML::TreeBuilder->new_from_content( $r );
 	#my $t				= HTML::TreeBuilder->new_from_file( './local_area_19' );
@@ -218,7 +218,10 @@ sub get_area_by_id {
 			= map { $_->attr( 'href' ) } $service->look_down( _tag => 'a' );
 	}
 
-	return WWW::PTV::Area->new( %area );
+	my $area =  WWW::PTV::Area->new( %area );
+	$CACHE->{AREA}->{$id} = $area if ( $self->{cache} );
+
+	return $area
 }
 
 sub get_local_areas {
