@@ -45,6 +45,10 @@ sub new {
 	return $self	
 }
 
+sub cache { $_[0]->{cache}++ }
+
+sub nocache { $_[0]->{cache} = 0 }
+
 sub get_metropolitan_bus_routes {
 	return $_[0]->__tl_request( 'RouteForm1_RouteUrl' );
 }
@@ -280,9 +284,18 @@ recommended that you enable caching in most implementations.  Caching will
 dramatically improve the performance of repeated method invocations and
 reduce network utilisation, but will increase memory requirements.
 
-If you do not enable caching, then you may wish to consider storing any object
-information in a database, or attempting to limit the frequency, or number, of
-methods invocations.
+You may also selectively enable or disable the cache after invoking the
+constructor via the B<cache> and B<nocache> methods.
+
+See the L<CACHING> section for more information.
+
+=head2 cache
+
+Enables internal object caching.  See the L<CACHING> section for more details.
+
+=head2 nocache
+
+Enables internal object caching.  See the L<CACHING> section for more details.
 
 =head2 get_metropolitan_bus_routes
 
@@ -376,6 +389,32 @@ The hash is indexed by the local area name.
 =head3 get_area_by_id ( $ID ) 
 
 Returns the area identified by the numerical parameter $ID as a L<WWW::PTV::Area> object.
+
+=head1 CACHING
+
+It is strongly recommended that you enable caching in the constructor invocation 
+using the optional I<cache> argument.  Caching is not enabled by default to 
+align with the principle of least surprise, however it is most likely that you 
+will want to enable it to improve the performance of your program and to reduce 
+the number ofrequests to the PTV website.
+
+If you do not enable caching, then you may wish to consider storing any 
+retrieved objects locally (e.g. in a database), or attempting to limit the 
+frequency, or number, of methods invocations.
+
+Note that you can also disable the cache for selective method invocations by
+invoking the B<no_cache> method prior to method invocation, and then re-enable
+the cache (which will also restore the content of the cache prior to the 
+invocation of the nocache method) with the B<cache> method.
+
+	# Disable cache
+	$ptv->nocache;
+
+	$ptv->get_stop_by_id( $id );
+
+	# Re-enable cache
+	$ptv->cache;
+
 
 =head1 AUTHOR
 
