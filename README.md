@@ -11,9 +11,9 @@ SYNOPSIS
     use WWW::PTV;
 
     my $ptv = WWW::PTV->new;
-    
+
 METHODS
--------
+------
 *  new
 
 Constructor method - creates a new WWW::PTV object.
@@ -33,7 +33,7 @@ within the context of the PTV website.
     
     # Prints a list of all metropolitan bus route IDs and names. e.g.
     # 1000  : 814 - Springvale South - Dandenong via Waverley Gardens Shopping Centre, Springvale
-    # 1001  : 815 - Dandenong - Noble Park                      
+    # 1001  : 815 - Dandenong - Noble Park  
     # 1003  : 821 - Southland - Clayton via Heatherton 
     # ... etc.
 
@@ -46,11 +46,11 @@ Please note that the bus route ID is the PTV designated ID for the route
 and not the service operator ID.
 
     my %routes = $ptv->get_regional_bus_routes;
-    
+
     while (( $id, $desc ) = each %routes ) {
-        print "$id : $desc\n" if ( $desc =~ /Echuca/ )
+	    print "$id : $desc\n" if ( $desc =~ /Echuca/ )
     }
-    
+
     # Prints a list of regional bus routes containing 'Echuca' in the route name - e.g.
     # 1346 : Echuca - Moama (Route 3 - Circular)
     # 1345 : Echuca - Echuca East (Route 2 - Circular)
@@ -62,7 +62,7 @@ and not the service operator ID.
 Returns a hash containing all metropolitan tram routes indexed by the
 route ID.
 
-PLease note as per the method above, the route ID is the PTV designated
+Please note as per the method above, the route ID is the PTV designated
 route and not the service operator ID.
 
 *  get_metropolitan_train_routes
@@ -73,10 +73,25 @@ route ID.
 Please note as per the method above, the route ID is the PTV designated
 route and not the service operator ID.
 
+*  get_vline_bus_routes
+
+Returns a hash containing all V/Line bus routes indexed by the route ID.
+
+Please note as per the method above, the route ID is the PTV designated
+route and not the service operator ID.
+
+*  get_vline_train_routes
+
+Returns a hash containing all V/Line train routes indexed by the route
+ID.
+
+Please note as per the method above, the route ID is the PTV designated
+route and not the service operator ID.
+
 *  get_route_by_id
- 
+
     my $route = $ptv->get_route_by_id( 1 );
-    
+
     print $route->direction_out."\n".$route_description."\n";
     # Prints the outbound route direction ("To Alamein") and a 
     # description of the outbound route
@@ -89,6 +104,21 @@ PTV route ID as obtained from one of the other methods in this class.
 
 See the WWW::Route page for more detail.
 
+*  get_stop_by_id ( $ID )
+
+Returns the stop identified by the numerical parameter $ID as a
+WWW::PTV::Stop object. The numerical identifier of a stop is unique.
+
+*  get_local_areas
+
+Returns a hash containing the defined "local areas" and a URI to the
+local area web page. The hash is indexed by the local area name.
+
+*  get_area_by_id ( $ID )
+
+Returns the area identified by the numerical parameter $ID as a
+WWW::PTV::Area object.
+
 AUTHOR
 ------
 Luke Poskitt, <ltp at cpan.org>
@@ -97,29 +127,29 @@ BUGS
 ----
 Please report any bugs or feature requests to "bug-www-ptv at
 rt.cpan.org", or through the web interface at
-http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-PTV.  I will be
+http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-PTV. I will be
 notified, and then you'll automatically be notified of progress on your
 bug as I make changes.
 
 SUPPORT
 -------
-You can find documentation for this module with the perldoc command.
-
-        perldoc WWW::PTV
-
 You can also look for information at:
 
-* RT: CPAN's request tracker
-	http://rt.cpan.org/NoAuth/Bugs.html?Dist=WWW-PTV
+*   RT: CPAN's request tracker
 
-* AnnoCPAN: Annotated CPAN documentation
-	http://annocpan.org/dist/WWW-PTV
+<http://rt.cpan.org/NoAuth/Bugs.html?Dist=WWW-PTV>
 
-* CPAN Ratings
-	http://cpanratings.perl.org/d/WWW-PTV
+*   AnnoCPAN: Annotated CPAN documentation
 
-* Search CPAN
-	http://search.cpan.org/dist/WWW-PTV/
+<http://annocpan.org/dist/WWW-PTV>
+
+*   CPAN Ratings
+
+<http://cpanratings.perl.org/d/WWW-PTV>
+
+*   Search CPAN
+
+<http://search.cpan.org/dist/WWW-PTV/>
 
 LICENSE AND COPYRIGHT
 ---------------------
