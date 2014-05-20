@@ -204,8 +204,11 @@ Returns the inbound timetable for the route as a L<WWW::PTV::TimeTable> object.
 
 Returns the outbound timetable for the route as a L<WWW::PTV::TimeTable> object.
 
-=head3 get_stop_names_and_ids ( $DIRECTION )
+=head3 get_stop_names_and_ids ( in|out )
 
+Returns an array of lists with each list containing two elements; a stop ID,
+and a stop descriptive name.  The elements of the list represent the in-order
+list of the stops on the route in the direction specified.
 
 =head3 operator ()
 
