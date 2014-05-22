@@ -3,6 +3,8 @@ package WWW::PTV::Area;
 use strict;
 use warnings;
 
+our $VERSION = '0.01';
+
 sub new {
 	my ($class, %args) = @_;
 	my $self = bless {}, $class;
@@ -30,7 +32,7 @@ sub towns {
 }
 
 sub service_types {
-	return keys $_[0]->{service}{names}
+	return keys %{ $_[0]->{service}{names} }
 }
 
 sub service_names {
