@@ -18,4 +18,4 @@ pod_coverage_ok( 'WWW::PTV::Route', 		 { also_private => [ 'new' ] } );
 pod_coverage_ok( 'WWW::PTV::Stop', 		 { also_private => [ 'new', 'routes' ] } );
 pod_coverage_ok( 'WWW::PTV::TimeTable', 	 { also_private => [ 'new' ] } );
 pod_coverage_ok( 'WWW::PTV::TimeTable::Schedule',{ also_private => [ 'new' ] } );
-done_testing;
+done_testing();
