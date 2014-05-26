@@ -11,7 +11,7 @@ use WWW::PTV::Area;
 use WWW::PTV::Stop;
 use WWW::PTV::Route;
 
-our $VERSION = '0.01';
+our $VERSION = '0.04';
 our $CACHE;
 
 sub __request {
@@ -369,12 +369,12 @@ and not the service operator ID.
 	# Prints the outbound route direction ("To Alamein") and a 
 	# description of the outbound route
 
-Returns a L<WWW::Route> object for the given route ID representing a transit route.
+Returns a L<WWW::PTV::Route> object for the given route ID representing a transit route.
 
 B<Note that> the route ID is not the service operator route ID, but is the PTV route
 ID as obtained from one of the other methods in this class.
 
-See the L<WWW::Route> page for more detail.
+See the L<WWW::PTV::Route> page for more detail.
 
 =head3 get_stop_by_id ( $ID )
 
