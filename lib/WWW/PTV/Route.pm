@@ -9,7 +9,7 @@ use Scalar::Util qw(weaken);
 use Carp qw(croak);
 
 our $STOP = {};
-our $VERSION = '0.01';
+our $VERSION = '0.05';
 our @ATTR = qw(	id direction_out direction_in direction_out_link direction_in_link
 		description_out description_in name operator operator_ph );
 
@@ -45,12 +45,9 @@ sub __get_tt {
         my( $self, $direction ) = @_; 
 	return unless $direction =~ /(in|out)/;
 
-	#my $tt = $self->__request( ( $direction eq 'out' ? $self->{direction_out_link} : $self->{direction_in} ) );
-	#my $t = HTML::TreeBuilder->new_from_content( $tt );
-	#my $tt = HTML::TreeBuilder->new_from_file( './regional_bus_route_geelong_19_tt_to_geelong_full' );
-	my $tt = HTML::TreeBuilder->new_from_file( './metro_bus_route_235_tt_out_full' );
-	#my $tt = HTML::TreeBuilder->new_from_file( './metro_bus_route_232_tt_out_full' );
-	#my $tt = HTML::TreeBuilder->new_from_file( './metro_train_route_1_tt' );
+	my $tt = $self->__request( ( $direction eq 'out' ? $self->{direction_out_link} : $self->{direction_in} ) );
+	my $t = HTML::TreeBuilder->new_from_content( $tt );
+	#my $tt = HTML::TreeBuilder->new_from_file( './metro_bus_route_235_tt_out_full' );
 	my $t = $tt;
 
 	for ( $t->look_down( _tag => 'meta' ) ) {
@@ -64,9 +61,6 @@ sub __get_tt {
 	}
 
 	$tt = $t->look_down( _tag => 'img', title => 'Expand' );
-	#if ( $tt ) { $tt = $t->look_down( _tag => 'img', title => 'Expand' )->attr( 'onclick' ) =~ /TTB_REQUEST/ }
-	#print "tt is $tt\n";
-	#$tt = $t->look_down( _tag => 'img', title => 'Expand' )->attr( 'onclick' ) =~ /TTB_REQUEST/;
 
 	if ( $tt && $tt->attr( 'onclick' ) && $tt->attr( 'onclick' ) =~ /TTB_REQUEST/ ) {
 		( $tt = $tt->attr( 'onclick' ) ) =~ s/^.*\('//;
@@ -217,6 +211,11 @@ Returns the line operator (i.e. the service provider).
 =head3 operator_ph ()
 
 Returns the phone number of the line operator.
+
+=head1 SEE ALSO
+
+L<WWW::PTV>, L<WWW::PTV::Area>, L<WWW::PTV::Stop>, L<WWW::PTV::TimeTable>,
+L<WWW::PTV::TimeTable::Schedule>.
 
 =head1 AUTHOR
 

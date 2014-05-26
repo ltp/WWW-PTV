@@ -1,5 +1,9 @@
 Revision history for WWW-PTV
 
+0.05    Mon May 26 2014 ltp@cpan.org
+	- Removed debugging and test config.
+	- Updated POD.
+
 0.04    Mon May 26 2014 ltp@cpan.org
 	- Updated PREREQ_PM in Makefile.PL
 

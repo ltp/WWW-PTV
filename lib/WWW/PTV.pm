@@ -11,7 +11,7 @@ use WWW::PTV::Area;
 use WWW::PTV::Stop;
 use WWW::PTV::Route;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 our $CACHE;
 
 sub __request {
@@ -79,9 +79,9 @@ sub get_route_by_id {
 
 	return $CACHE->{ROUTE}->{$id} if ( $self->{cache} and $CACHE->{ROUTE}->{$id} );
 
-	#my $r 		= $self->__request( "/route/view/$id" );
-	#my $t		= HTML::TreeBuilder->new_from_content( $r );
-	my $t		= HTML::TreeBuilder->new_from_file( './metro_train_route_1' );
+	my $r 		= $self->__request( "/route/view/$id" );
+	my $t		= HTML::TreeBuilder->new_from_content( $r );
+	#my $t		= HTML::TreeBuilder->new_from_file( './metro_train_route_1' );
 	#my $t		= HTML::TreeBuilder->new_from_file( './regional_bus_route_geelong_19' );
 	my %route	= (id => $id);
 	my $r_link	= $t->look_down( _tag => 'div', id => 'content' );
@@ -114,13 +114,10 @@ sub get_stop_by_id {
 	my( $self, $id )= @_;
 	$id or return "Mandatory parameter id not given";
 	return $CACHE->{STOP}->{$id} if ( $self->{cache} and $CACHE->{STOP}->{$id} );
-	#my $r				= $self->__request( "/stop/view/$id" );
-	#print "Request done\n";
-	#my $t				= HTML::TreeBuilder->new_from_content( $r );
-	my $t				= HTML::TreeBuilder->new_from_file( './45470' );
+	my $r				= $self->__request( "/stop/view/$id" );
+	my $t				= HTML::TreeBuilder->new_from_content( $r );
+	#my $t				= HTML::TreeBuilder->new_from_file( './45470' );
 	my %stop			= (id => $id );
-	#$stop{fn_org}			= $t->look_down( _tag => 'h1',   class => 'fn org' )->as_text;
-	#$stop{fn_org}	 		=~ /\w+/ or return "Stop id ($id) appears to be invalid";
 	my $s_type 			= $t->look_down( _tag => 'img', class => 'stopModeImage' );
 	$stop{address}			= $t->look_down( _tag => 'div', id => 'container' )
 						->look_down( _tag => 'p' )
@@ -201,10 +198,10 @@ sub get_area_by_id {
 	my( $self, $id )= @_;
 	$id or return "Mandatory parameter id not given";
 	return $CACHE->{AREA}->{$id} if ( $self->{cache} and $CACHE->{AREA}->{$id} );
-	#my $r				= $self->__request( "/location/view/$id" );
-	#my $t				= HTML::TreeBuilder->new_from_content( $r );
+	my $r				= $self->__request( "/location/view/$id" );
+	my $t				= HTML::TreeBuilder->new_from_content( $r );
 	#my $t				= HTML::TreeBuilder->new_from_file( './local_area_19' );
-	my $t				= HTML::TreeBuilder->new_from_file( './area_30' );
+	#my $t				= HTML::TreeBuilder->new_from_file( './area_30' );
 	my %area 			= ( id => $id );
 	$area{name}			= $t->look_down( _tag => 'h1' )->as_text;
 	@{ $area{suburbs}}		= split /, /, $t->look_down( _tag => 'p' )->as_text;
@@ -230,9 +227,9 @@ sub get_area_by_id {
 
 sub get_local_areas {
 	my $self = shift;
-	#my $r = $self->__request( '/getting-around/local-areas/' );
-	#my $t = HTML::TreeBuilder->new_from_content( $r );
-	my $t = HTML::TreeBuilder->new_from_file( './local_areas_list' );
+	my $r = $self->__request( '/getting-around/local-areas/' );
+	my $t = HTML::TreeBuilder->new_from_content( $r );
+	#my $t = HTML::TreeBuilder->new_from_file( './local_areas_list' );
 	$t = $t->look_down( _tag => 'div', id => 'content' );
 
 	@{ $self->{local_areas}{names} }
@@ -260,10 +257,6 @@ __END__
 =head1 NAME
 
 WWW::PTV - Perl interface to Public Transport Victoria (PTV) Website.
-
-=head1 VERSION
-
-Version 0.01
 
 =head1 SYNOPSIS
 
@@ -416,15 +409,20 @@ invocation of the nocache method) with the B<cache> method.
 	$ptv->cache;
 
 
+=head1 SEE ALSO
+
+L<WWW::PTV::Area>, L<WWW::PTV::Route>, L<WWW::PTV::Stop>, 
+L<WWW::PTV::TimeTable>, L<WWW::PTV::TimeTable::Schedule>
 =head1 AUTHOR
 
 Luke Poskitt, C<< <ltp at cpan.org> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-www-ptv at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-PTV>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
+Please report any bugs or feature requests to C<bug-www-ptv at rt.cpan.org>, or 
+through the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-PTV>.  
+I will be notified, and then you'll automatically be notified of progress on 
+your bug as I make changes.
 
 
 =head1 SUPPORT

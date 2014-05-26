@@ -3,6 +3,8 @@ package WWW::PTV::TimeTable::Schedule;
 use strict;
 use warnings;
 
+our $VERSION = '0.05';
+
 sub new {
 	my ($class, $schedule) = @_;
 	my $self = bless {}, $class;
@@ -171,6 +173,11 @@ characters to indicate special values.
 
 Prints the current date and time and a nicely formatted schedule with the
 next service time clearly highlighted.
+
+=head1 SEE ALSO
+
+L<WWW::PTV>, L<WWW::PTV::Area>, L<WWW::PTV::Route>, L<WWW::PTV::Stop>,
+L<WWW::PTV::TimeTable>.
 
 =head1 AUTHOR
 

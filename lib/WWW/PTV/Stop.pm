@@ -5,6 +5,8 @@ use warnings;
 
 use Carp qw(croak);
 
+our $VERSION = '0.05';
+
 our @ATTR = qw(		address bicycle_cage bicycle_lockers bicycle_racks car_parking 
 			escalator hearing_loop id latitude lift lighting lines 
 			locality lockers longitude map_ref municipiality municipiality_id 
@@ -283,6 +285,11 @@ typically has a value of either 'Yes' or 'No'.
 
 Returns the stop zone (per the PTV zoning system) as a comma-seperated 
 zone name and zone numerical identifier - e.g. "Regional, 4".
+
+=head1 SEE ALSO
+
+L<WWW::PTV>, L<WWW::PTV::Area>, L<WWW::PTV::Route>, L<WWW::PTV::TimeTable>,
+L<WWW::PTV::TimeTable::Schedule>.
 
 =head1 AUTHOR
 

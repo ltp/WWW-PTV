@@ -3,7 +3,7 @@ package WWW::PTV::Area;
 use strict;
 use warnings;
 
-our $VERSION = '0.02';
+our $VERSION = '0.05';
 
 sub new {
 	my ($class, %args) = @_;
@@ -201,7 +201,11 @@ provided, then only services matching both criteria are returned.
 					     type => 'bus' );
 
 Note that matching is case-insensitive.
-	
+
+=head1 SEE ALSO
+
+L<WWW::PTV>, L<WWW::PTV::Route>, L<WWW::PTV::Stop>, L<WWW::PTV::TimeTable>, 
+L<WWW::PTV::TimeTable::Schedule>
 
 =head1 AUTHOR
 

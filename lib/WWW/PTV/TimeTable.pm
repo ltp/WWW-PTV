@@ -6,7 +6,7 @@ use warnings;
 use WWW::PTV::TimeTable::Schedule;
 use Carp qw(croak);
 
-our $VERSION = '0.01';
+our $VERSION = '0.05';
 
 our @ATTR = qw( route_id direction direction_desc name );
 
@@ -175,6 +175,11 @@ Prints a formatted version of the complete timetable.
 Note that for timetables with a large number of service
 times, this method will produce B<very> wide output that
 may not be viewable even on large screens.
+
+=head1 SEE ALSO
+
+L<WWW::PTV>, L<WWW::PTV::Area>, L<WWW::PTV::Route>, L<WWW::PTV::Stop>,
+L<WWW::PTV::TimeTable::Schedule>.
 
 =head1 AUTHOR
 
