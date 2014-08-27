@@ -48,7 +48,7 @@ sub __get_tt {
 	my $tt = $self->__request( ( $direction eq 'out' ? $self->{direction_out_link} : $self->{direction_in} ) );
 	my $t = HTML::TreeBuilder->new_from_content( $tt );
 	#my $tt = HTML::TreeBuilder->new_from_file( './metro_bus_route_235_tt_out_full' );
-	my $t = $tt;
+	#my $t = $tt;
 
 	for ( $t->look_down( _tag => 'meta' ) ) {
 		if( ( defined $_->attr( 'http-equiv' ) ) and ( $_->attr( 'http-equiv' ) eq 'refresh' ) ) {
