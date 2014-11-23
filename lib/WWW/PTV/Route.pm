@@ -45,7 +45,7 @@ sub __get_tt {
         my( $self, $direction ) = @_; 
 	return unless $direction =~ /(in|out)/;
 
-	my $tt = $self->__request( ( $direction eq 'out' ? $self->{direction_out_link} : $self->{direction_in} ) );
+	my $tt = $self->__request( ( $direction eq 'out' ? $self->{direction_out_link} : $self->{direction_in_link} ) );
 	my $t = HTML::TreeBuilder->new_from_content( $tt );
 	#my $tt = HTML::TreeBuilder->new_from_file( './metro_bus_route_235_tt_out_full' );
 	#my $t = $tt;
@@ -68,7 +68,7 @@ sub __get_tt {
 		$t = HTML::TreeBuilder->new_from_content( $self->__request( "http://tt.ptv.vic.gov.au/tt/$tt" ) )
 	}
 
-	$t = $t->look_down( _tag => 'div', id => qr/tt(Bus|Tram|Train)/ );
+	$t = $t->look_down( _tag => 'div', id => qr/tt(Bus|Tram|Train|Regional)/ );
 	my @stops = $t->look_down( _tag => 'div', class => qr/^ma_stop/ );
 	my @stop_names = map { $_->as_text } @stops;
 	my @stop_links = map { my ($r) = $_->look_down( _tag => 'a' )->attr( 'href' ) =~ /.*\/(\d*$)/ } @stops;
