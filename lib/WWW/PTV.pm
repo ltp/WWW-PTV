@@ -87,10 +87,10 @@ sub get_route_by_id {
 	my $r_link	= $t->look_down( _tag => 'div', id => 'content' );
 	$route{name}	= $t->look_down( _tag => 'h1' )->as_text;
 	( $route{direction_in}, $route{direction_out} ) 
-			= $r_link->look_down( _tag => 'a' );
+			= $r_link->look_down( _tag => 'ul' )->look_down( _tag => "a" );
 
 	( $route{direction_in_link}, $route{direction_out_link} ) 
-			= map { $_->attr( 'href' ) } $r_link->look_down( _tag => 'a' );
+			= map { $_->attr( 'href' ) } $r_link->look_down( _tag => 'ul' )->look_down( _tag => "a" );
 
 	( $route{direction_in}, $route{direction_out} ) 
 			= map { $_->as_text } ( $route{direction_in}, $route{direction_out} );
