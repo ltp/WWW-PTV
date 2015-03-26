@@ -1,5 +1,8 @@
 Revision history for WWW-PTV
 
+0.06    Thu Mar 26 2015 ltp@cpan.org
+	- Fixed redeclared variable.
+
 0.05    Mon May 26 2014 ltp@cpan.org
 	- Removed debugging and test config.
 	- Updated POD.
