@@ -9,7 +9,7 @@ use Scalar::Util qw(weaken);
 use Carp qw(croak);
 
 our $STOP = {};
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 our @ATTR = qw(	id direction_out direction_in direction_out_link direction_in_link
 		description_out description_in name operator operator_ph );
 

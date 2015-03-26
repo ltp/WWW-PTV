@@ -5,7 +5,7 @@ use warnings;
 
 use Carp qw(croak);
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 our @ATTR = qw(		address bicycle_cage bicycle_lockers bicycle_racks car_parking 
 			escalator hearing_loop id latitude lift lighting lines 

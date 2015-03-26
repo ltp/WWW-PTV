@@ -6,7 +6,7 @@ use warnings;
 use WWW::PTV::TimeTable::Schedule;
 use Carp qw(croak);
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 our @ATTR = qw( route_id direction direction_desc name );
 
