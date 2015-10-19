@@ -9,7 +9,6 @@ use Scalar::Util qw(weaken);
 use Carp qw(croak);
 
 our $STOP = {};
-our $VERSION = '0.06';
 our @ATTR = qw(	id direction_out direction_in direction_out_link direction_in_link
 		description_out description_in name operator operator_ph );
 
@@ -25,7 +24,8 @@ foreach my $attr ( @ATTR ) {
 }
 
 sub new {
-        my( $class, %args ) = @_; 
+        my ( $class, %args ) = @_;
+
         my $self = bless {}, $class;
         $args{id} or croak 'Constructor failed: mandatory id argument not supplied';
 
@@ -37,25 +37,32 @@ sub new {
         return $self
 }
 
-sub get_inbound_tt { $_[0]->__get_tt( 'in' ) } 
+sub get_inbound_tt	{ $_[0]->__get_tt( 'in' )	} 
 
-sub get_outbound_tt { $_[0]->__get_tt( 'out' ) } 
+sub get_outbound_tt	{ $_[0]->__get_tt( 'out' )	} 
 
 sub __get_tt {
-        my( $self, $direction ) = @_; 
+        my ( $self, $direction ) = @_;
+
 	return unless $direction =~ /(in|out)/;
 
-	my $tt = $self->__request( ( $direction eq 'out' ? $self->{direction_out_link} : $self->{direction_in_link} ) );
+	my $tt = $self->__request( $direction eq 'out' 
+		? $self->{direction_out_link} 
+		: $self->{direction_in_link}
+	);
+
 	my $t = HTML::TreeBuilder->new_from_content( $tt );
-	#my $tt = HTML::TreeBuilder->new_from_file( './metro_bus_route_235_tt_out_full' );
-	#my $t = $tt;
 
 	for ( $t->look_down( _tag => 'meta' ) ) {
-		if( ( defined $_->attr( 'http-equiv' ) ) and ( $_->attr( 'http-equiv' ) eq 'refresh' ) ) {
+
+		if( ( defined $_->attr( 'http-equiv' ) ) 
+			and ( $_->attr( 'http-equiv' ) eq 'refresh' ) 
+		) {
 			( my $url = $_->attr( 'content' ) ) =~ s/^.*url=//;
 			$url .= '&itdLPxx_scrollOffset=118';
-			print "Getting: $url\n";
+
 			$t = HTML::TreeBuilder->new_from_content( $self->__request( $self->{uri}.'/tt/'.$url ) );
+
 			last
 		}
 	}
@@ -76,7 +83,6 @@ sub __get_tt {
 	my $c = 0;
 
 	foreach my $t ( $t->look_down( _tag => 'div', class => qr/^ttBodyN?TP$/ ) ) {
-		#my @s = map { $_->as_text } $t->look_down( _tag => 'span' );
 		my $s;
 
 		foreach my $t ( $t->look_down( _tag => 'span' ) ) {
@@ -102,19 +108,23 @@ sub __get_tt {
 }
 
 sub __request {
-        my($self,$uri)  = @_; 
+        my ( $self, $uri ) = @_;
+
         my $res = ( $uri !~ /^http:/
                 ? $self->{ua}->get( $self->{uri} . $uri )
                 : $self->{ua}->get( $uri ) );
 
 	return $res->content if $res->is_success;
+
 	croak 'Unable to retrieve content: ' . $res->status_line
 }
 
 sub get_stop_names_and_ids {
-	my ($self, $direction) = @_;
+	my ( $self, $direction ) = @_;
+
 	$direction ||= 'out';
 	$self->{timetable}->{$direction} || $self->__get_tt($direction);
+
 	return $self->{timetable}->{$direction}->stop_names_and_ids;
 }
 

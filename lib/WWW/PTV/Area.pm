@@ -3,28 +3,28 @@ package WWW::PTV::Area;
 use strict;
 use warnings;
 
-our $VERSION = '0.06';
-
 sub new {
-	my ($class, %args) = @_;
-	my $self = bless {}, $class;
-	$self->{id}	= $args{id};
-	$self->{name}	= $args{name};
-	$self->{suburbs}= $args{suburbs};
-	$self->{service}= $args{service};
+	my ( $class, %args ) = @_;
+
+	my $self	 = bless {}, $class;
+	$self->{id}	 = $args{id};
+	$self->{name}	 = $args{name};
+	$self->{suburbs} = $args{suburbs};
+	$self->{service} = $args{service};
+
 	return $self
 }
 
 sub id {
-	return $_[0]->{id}
+	return $_[0]->{ id }
 }
 
 sub name {
-	return $_[0]->{name}
+	return $_[0]->{ name }
 }
 
 sub suburbs {
-	return $_[0]->{suburbs}
+	return $_[0]->{ suburbs }
 }
 
 sub towns {
@@ -32,19 +32,20 @@ sub towns {
 }
 
 sub service_types {
-	return keys %{ $_[0]->{service}{names} }
+	return keys %{ $_[0]->{ service }{ names } }
 }
 
 sub service_names {
-	return $_[0]->{service}{names}
+	return $_[0]->{ service }{ names }
 }
 
 sub service_links {
-	return $_[0]->{service}{links}
+	return $_[0]->{ service }{ links }
 }
 
 sub services {
 	my $self = shift;
+
 	my @res;
 	my $service_names = $self->service_names;
 	my $service_links = $self->service_links;
@@ -68,11 +69,14 @@ sub services {
 
 sub services_like {
 	my ( $self, %args ) = @_;
+
 	$args{type} or return grep { $_->{name} =~ /$args{name}/i } $self->services;
+
 	$args{name} or return grep { $_->{type} =~ /$args{type}/i } $self->services;
 
-	return grep {  	  $_->{type} =~ /$args{type}/i
-		      and $_->{name} =~ /$args{name}/i
+	return grep {  	  
+			$_->{type} =~ /$args{type}/i
+			and $_->{name} =~ /$args{name}/i
 	       } $self->services
 }
 

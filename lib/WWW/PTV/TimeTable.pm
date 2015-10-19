@@ -6,17 +6,17 @@ use warnings;
 use WWW::PTV::TimeTable::Schedule;
 use Carp qw(croak);
 
-our $VERSION = '0.06';
-
 our @ATTR = qw( route_id direction direction_desc name );
 
 sub new {
-	my($class, $stop_names, $stop_ids, $stop_times) = @_;
-	my $self = bless {}, $class;
+	my ( $class, $stop_names, $stop_ids, $stop_times ) = @_;
+
+	my $self		= bless {}, $class;
 	$self->{stop_names} 	= $stop_names;
 	$self->{stop_ids}	= $stop_ids;
 	$self->{stop_times}	= $stop_times;
 	@{ $self->{map} }{ @{ $self->{stop_ids} } } = @{ $self->{stop_times} };
+
 	return $self
 }
 
@@ -29,22 +29,25 @@ sub stop_names {
 }
 
 sub stop_names_and_ids {
-	my ($self, $type) = @_;
+	my ( $self, $type ) = @_;
+
 	$type ||= 'array';
 	$type = 'array' unless $type =~ /^(array|hash)$/;
-	my @n = @{$self->{stop_names}};
-	my @i = @{$self->{stop_ids}};
+	my @n = @{ $self->{stop_names} };
+	my @i = @{ $self->{stop_ids} };
 	my $c = 0;
+
 	return map { [ $_, $n[$c++] ] } @i
 }
 
 sub get_schedule_by_stop_id {
 	defined $_[0]->{map}{$_[1]} 
-	and return WWW::PTV::TimeTable::Schedule->new( $_[0]->{map}{$_[1]} )
+		and return WWW::PTV::TimeTable::Schedule->new( $_[0]->{map}{$_[1]} )
 }
 
 sub get_schedule_by_stop_name {
-	my ($self, $stop) = @_;
+	my ( $self, $stop ) = @_;
+
 	my $c = 0;
 	# This is really ugly - but we need to use the index of the matching
 	# stop name as a hash key to retrieve the stop times from the map
@@ -58,6 +61,7 @@ sub get_schedule_by_stop_name {
 
 sub pretty_print {
 	my $self= shift;
+
 	my @t	= localtime(time);
 	my @d	= qw(Sunday Monday Tuesday Wednesday Thursday Friday Saturday 
 		     Sunday);
@@ -69,7 +73,11 @@ sub pretty_print {
 
 	foreach my $s ( @{ $self->{stop_times} } ) {
 		printf( "| %-50s |", @{ $self->{stop_names} }[$c] );
-		map { printf( "%5s|", $_ ) } @{ @{ $self->{stop_times} }[$c] };
+
+		map { 
+			printf( "%5s|", $_ ) 
+		} @{ @{ $self->{ stop_times } }[ $c ] };
+
 		print "\n+";
 		my $l = ( 54 + ( 7 * scalar @{ @{ $self->{stop_times} }[$c] } ) ) - 2;
 		print "-"x$l;

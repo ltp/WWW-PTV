@@ -14,35 +14,45 @@ use WWW::PTV::Route;
 our $VERSION = '0.06';
 our $CACHE;
 
-sub __request {
-	my($self,$uri)	= @_;
-	my $res = ( $uri !~ /^http:/
-		? $self->{ua}->get( $self->{uri} . $uri )
-		: $self->{ua}->get( $uri ) );
-	$res->is_success and return $res->content;
-	croak 'Unable to retrieve content: ' . $res->status_line
-}
-
-sub __tl_request {
-	my ($self, $tag_id)= @_;
-	my $r = ( $self->{cache} and $CACHE->{timetables}->{master}
-		? $CACHE->{timetables}->{master}
-		: $self->__request( 'http://ptv.vic.gov.au/timetables' ) );
-	$CACHE->{timetables}->{master} = $r if $self->{cache};
-	my $t 		= HTML::TreeBuilder->new_from_content( $r );
-	$t		= $t->look_down( _tag => 'select', id => $tag_id );
-	my @routes	= $t->look_down( _tag => 'option' );
-	return my %routes = map { $_->attr( 'value' ) => $_->as_text } grep { $_->attr( 'value' ) ne '' } @routes
-}
-
 sub new {
-	my($class,%args)= @_;
+	my ( $class, %args ) = @_;
+
 	my $self 	= bless {}, $class;
 	$self->{uri} 	= 'http://' . ( defined $args{uri} ? $args{uri} : 'ptv.vic.gov.au' ) . '/';
 	$self->{ua}	= LWP::UserAgent->new;
 	$self->{tree}	= HTML::TreeBuilder->new;
 	$self->{cache}++ if $args{cache};
+
 	return $self	
+}
+
+sub __request {
+	my ( $self, $uri ) = @_;
+
+	my $res = ( $uri !~ /^http:/
+		? $self->{ua}->get( $self->{uri} . $uri )
+		: $self->{ua}->get( $uri ) );
+
+	$res->is_success and return $res->content;
+
+	croak 'Unable to retrieve content: ' . $res->status_line
+}
+
+sub __tl_request {
+	my ( $self, $tag_id ) =  @_;
+
+	my $r = ( ( $self->{cache} and $CACHE->{timetables}->{master} )
+		? $CACHE->{timetables}->{master}
+		: $self->__request( 'http://ptv.vic.gov.au/timetables' )
+	);
+
+	$CACHE->{timetables}->{master} = $r if $self->{cache};
+
+	my $t 		= HTML::TreeBuilder->new_from_content( $r );
+	$t		= $t->look_down( _tag => 'select', id => $tag_id );
+	my @routes	= $t->look_down( _tag => 'option' );
+
+	return my %routes = map { $_->attr( 'value' ) => $_->as_text } grep { $_->attr( 'value' ) ne '' } @routes
 }
 
 sub cache { $_[0]->{cache}++ }
@@ -74,18 +84,18 @@ sub get_regional_bus_routes {
 }
 
 sub get_route_by_id {
-	my( $self, $id )= @_;
+	my ( $self, $id ) = @_;
+
 	$id or return "Mandatory parameter id not given";
 
 	return $CACHE->{ROUTE}->{$id} if ( $self->{cache} and $CACHE->{ROUTE}->{$id} );
 
 	my $r 		= $self->__request( "/route/view/$id" );
 	my $t		= HTML::TreeBuilder->new_from_content( $r );
-	#my $t		= HTML::TreeBuilder->new_from_file( './metro_train_route_1' );
-	#my $t		= HTML::TreeBuilder->new_from_file( './regional_bus_route_geelong_19' );
 	my %route	= (id => $id);
 	my $r_link	= $t->look_down( _tag => 'div', id => 'content' );
 	$route{name}	= $t->look_down( _tag => 'h1' )->as_text;
+
 	( $route{direction_in}, $route{direction_out} ) 
 			= $r_link->look_down( _tag => 'ul' )->look_down( _tag => "a" );
 
@@ -97,6 +107,7 @@ sub get_route_by_id {
 
 	( $route{description_in}, $route{description_out} ) 
 			= map { $_->as_text } $r_link->look_down( _tag => 'p' );
+
 	my $operator 	= $t->look_down( _tag => 'div', class => 'operator' )->as_text;
 	$operator 	=~ s/(Contact|Website|:)/,/g;
 	$operator 	=~ s/\s//g;
@@ -105,18 +116,21 @@ sub get_route_by_id {
 	$route{uri}	= $self->{uri};
 	my $route 	= WWW::PTV::Route->new( %route );
 	$CACHE->{ROUTE}->{$id} = $route if ( $self->{cache} );
+
 	return $route
 }
 
 
 
 sub get_stop_by_id {
-	my( $self, $id )= @_;
+	my ( $self, $id ) = @_;
+
 	$id or return "Mandatory parameter id not given";
+
 	return $CACHE->{STOP}->{$id} if ( $self->{cache} and $CACHE->{STOP}->{$id} );
+
 	my $r				= $self->__request( "/stop/view/$id" );
 	my $t				= HTML::TreeBuilder->new_from_content( $r );
-	#my $t				= HTML::TreeBuilder->new_from_file( './45470' );
 	my %stop			= (id => $id );
 	my $s_type 			= $t->look_down( _tag => 'img', class => 'stopModeImage' );
 	$stop{address}			= $t->look_down( _tag => 'div', id => 'container' )
@@ -195,13 +209,14 @@ sub get_stop_by_id {
 }
 
 sub get_area_by_id {
-	my( $self, $id )= @_;
+	my ( $self, $id ) = @_;
+
 	$id or return "Mandatory parameter id not given";
+
 	return $CACHE->{AREA}->{$id} if ( $self->{cache} and $CACHE->{AREA}->{$id} );
+
 	my $r				= $self->__request( "/location/view/$id" );
 	my $t				= HTML::TreeBuilder->new_from_content( $r );
-	#my $t				= HTML::TreeBuilder->new_from_file( './local_area_19' );
-	#my $t				= HTML::TreeBuilder->new_from_file( './area_30' );
 	my %area 			= ( id => $id );
 	$area{name}			= $t->look_down( _tag => 'h1' )->as_text;
 	@{ $area{suburbs}}		= split /, /, $t->look_down( _tag => 'p' )->as_text;
@@ -227,9 +242,9 @@ sub get_area_by_id {
 
 sub get_local_areas {
 	my $self = shift;
+
 	my $r = $self->__request( '/getting-around/local-areas/' );
 	my $t = HTML::TreeBuilder->new_from_content( $r );
-	#my $t = HTML::TreeBuilder->new_from_file( './local_areas_list' );
 	$t = $t->look_down( _tag => 'div', id => 'content' );
 
 	@{ $self->{local_areas}{names} }
@@ -240,13 +255,16 @@ sub get_local_areas {
 
 	my %res;
 	@res{ @{ $self->{local_areas}{names} } } = @{ $self->{local_areas}{links} };
+
 	return %res
 }
 
 sub _get_line_type {
 	my $obj = shift;
+
 	$obj =~ s/^.*\/icon//;
 	$obj =~ s/\..*$//;
+
 	return lc $obj
 }
 
@@ -263,6 +281,18 @@ WWW::PTV - Perl interface to Public Transport Victoria (PTV) Website.
     use WWW::PTV;
 
     my $ptv = WWW::PTV->new( cache => 1 );
+
+    # Return a WWW::PTV::Route object for route ID 1
+    my $route = $ptv->get_route_by_id(1);
+
+    # Print the route name and outbound description
+    print $route->name .":". $route->description ."\n";
+
+    # Get the route outbound timetable as a WWW::PTV::TimeTable object
+    my $tt = $route->get_outbound_tt;
+
+    # Get the route stop names and IDs as a hash in the inbound direction
+    my %stops = $route->get_stop_names_and_ids( 'in' );
     
 =head1 METHODS
 
