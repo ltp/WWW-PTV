@@ -11,7 +11,7 @@ use WWW::PTV::Area;
 use WWW::PTV::Stop;
 use WWW::PTV::Route;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 our $CACHE;
 
 sub new {
@@ -441,8 +441,12 @@ invocation of the nocache method) with the B<cache> method.
 
 =head1 SEE ALSO
 
-L<WWW::PTV::Area>, L<WWW::PTV::Route>, L<WWW::PTV::Stop>, 
-L<WWW::PTV::TimeTable>, L<WWW::PTV::TimeTable::Schedule>
+L<WWW::PTV::Area>
+L<WWW::PTV::Route>
+L<WWW::PTV::Stop>
+L<WWW::PTV::TimeTable>
+L<WWW::PTV::TimeTable::Schedule>
+
 =head1 AUTHOR
 
 Luke Poskitt, C<< <ltp at cpan.org> >>
@@ -483,9 +487,6 @@ L<http://cpanratings.perl.org/d/WWW-PTV>
 L<http://search.cpan.org/dist/WWW-PTV/>
 
 =back
-
-
-=head1 ACKNOWLEDGEMENTS
 
 
 =head1 LICENSE AND COPYRIGHT
