@@ -337,6 +337,7 @@ to the unique ID assigned to the route within the context of the PTV website.
 	# 1003  : 821 - Southland - Clayton via Heatherton 
 	# ... etc.
 
+
 =head2 get_regional_bus_routes
 
 Returns a hash containing all regional bus routes indexed by the bus route ID.
@@ -355,6 +356,7 @@ the service operator ID.
 	# 1345 : Echuca - Echuca East (Route 2 - Circular)
 	# 6649 : Kerang - Echuca via Cohuna (Effective from 18/11/2012)
 	# ... etc.
+
 
 =head2 get_metropolitan_tram_routes
 
@@ -399,17 +401,17 @@ ID as obtained from one of the other methods in this class.
 
 See the L<WWW::PTV::Route> page for more detail.
 
-=head3 get_stop_by_id ( $ID )
+=head2 get_stop_by_id ( $ID )
 
 Returns the stop identified by the numerical parameter $ID as a L<WWW::PTV::Stop>
 object.  The numerical identifier of a stop is unique.
 
-=head3 get_local_areas
+=head2 get_local_areas
 
 Returns a hash containing the defined "local areas" and a URI to the local area web page.
 The hash is indexed by the local area name.
 
-=head3 get_area_by_id ( $ID ) 
+=head2 get_area_by_id ( $ID ) 
 
 Returns the area identified by the numerical parameter $ID as a L<WWW::PTV::Area> object.
 

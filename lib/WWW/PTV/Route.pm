@@ -160,65 +160,65 @@ WWW::PTV::Route - Class for operations with Public Transport Victoria (PTV) rout
 
 =head1 METHODS
 
-=head3 id ()
+=head2 id ()
 
 Returns the route numerical ID.
 
-=head3 name ()
+=head2 name ()
 
 Returns the route name - this is a free-form textual description of the route.
 
-=head3 direction_out ()
+=head2 direction_out ()
 
 Returns the outbound route description - this is freeform text that will probably
 take the form 'To $LINE_NAME/$SUBURB_NAME/$LOCALITY'.
 
-=head3 direction_in ()
+=head2 direction_in ()
 
 Returns the inbound route description - this is freeform text that will probably
 take the form 'To $LINE_NAME/$SUBURB_NAME/$LOCALITY'.
 
-=head3 direction_out ()
+=head2 direction_out ()
 
 Returns the outbound route description.
 
-=head3 direction_in_link ()
+=head2 direction_in_link ()
 
 Returns the URI for the timetable for the route in the inbound direction.
 
-=head3 direction_out_link ()
+=head2 direction_out_link ()
 
 Returns the URI for the timetable for the route in the outbound direction.
 
-=head3 description_in ()
+=head2 description_in ()
 
 Returns the inbound route description - this is freeform text that typically
 describes the major stops of the route and major direction changes.
 
-=head3 description_out ()
+=head2 description_out ()
 
 Returns the outbound route description - this is freeform text that typically
 describes the major stops of the route and major direction changes.
 
-=head3 get_inbound_tt ()
+=head2 get_inbound_tt ()
 
 Returns the inbound timetable for the route as a L<WWW::PTV::TimeTable> object.
 
-=head3 get_outbound_tt ()
+=head2 get_outbound_tt ()
 
 Returns the outbound timetable for the route as a L<WWW::PTV::TimeTable> object.
 
-=head3 get_stop_names_and_ids ( in|out )
+=head2 get_stop_names_and_ids ( in|out )
 
 Returns an array of lists with each list containing two elements; a stop ID,
 and a stop descriptive name.  The elements of the list represent the in-order
 list of the stops on the route in the direction specified.
 
-=head3 operator ()
+=head2 operator ()
 
 Returns the line operator (i.e. the service provider).
 
-=head3 operator_ph ()
+=head2 operator_ph ()
 
 Returns the phone number of the line operator.
 
